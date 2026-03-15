@@ -9,20 +9,26 @@ The goal of Harvestify is to make **modern agricultural intelligence accessible 
 
 # 🚀 Features
 
-### 🌱 Crop Recommendation - Get crop suggestions based on soil parameters such as **Nitrogen, Phosphorus, Potassium, pH, temperature, and humidity**.
+### 🌱 Crop Recommendation -
+```bash Get crop suggestions based on soil parameters such as **Nitrogen, Phosphorus, Potassium, pH, temperature, and humidity**.```
 
-### 🔬 Plant Disease Detection - Upload plant leaf images and detect diseases using **Convolutional Neural Networks (CNN)**.
+### 🔬 Plant Disease Detection - 
+```bash Upload plant leaf images and detect diseases using **Convolutional Neural Networks (CNN)**.```
 
-### 📊 Yield Prediction - Estimate potential crop yield using **historical agricultural and weather data**.
+### 📊 Yield Prediction -
+```bash Estimate potential crop yield using **historical agricultural and weather data**.```
 
-### 🌤️ Weather Monitoring - View **real-time weather conditions and forecasts** to help farmers plan irrigation and harvesting.
+### 🌤️ Weather Monitoring - 
+``` View **real-time weather conditions and forecasts** to help farmers plan irrigation and harvesting.```
 
-### 💰 Market Price Tracking - Check **current mandi prices** for crops across different regions.
+### 💰 Market Price Tracking -
+```Check **current mandi prices** for crops across different regions.```
 
-### 👤 User Authentication- Secure login and registration system with OTP verification.
+### 👤 User Authentication- 
+```Secure login and registration system with OTP verification.```
 
-### 🌐 Multi-Language Support - English, Hindi, and Marathi
----
+### 🌐 Multi-Language Support - 
+```English, Hindi, and Marathi```
 
 # 🛠 Tech Stack
 
