@@ -1,0 +1,685 @@
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+
+const resources = {
+  en: {
+    translation: {
+      // ========== NAVIGATION ==========
+      "Home": "Home",
+      "Features": "Features",
+      "Dashboard": "Dashboard",
+      "About": "About",
+      "Login": "Login",
+      "Register": "Register",
+      "Logout": "Logout",
+      "Profile": "Profile",
+      "AI Assistant": "AI Assistant",
+      
+      // ========== HERO SECTION ==========
+      "Harvestify": "Harvestify",
+      "Smart Farming Assistance for Better Crop Decisions": "Smart Farming Assistance for Better Crop Decisions",
+      "Helping farmers predict crops, detect diseases, and improve yield using data-driven insights.": "Helping farmers predict crops, detect diseases, and improve yield using data-driven insights.",
+      "Get Started": "Get Started",
+      "Explore Dashboard": "Explore Dashboard",
+      "Happy Farmers": "Happy Farmers",
+      "Crops Analyzed": "Crops Analyzed",
+      "Accuracy Rate": "Accuracy Rate",
+      
+      // ========== FEATURES SECTION ==========
+      "Our Features": "Our Features",
+      "Everything you need to make informed farming decisions": "Everything you need to make informed farming decisions",
+      "Crop Recommendation": "Crop Recommendation",
+      "Disease Detection": "Disease Detection",
+      "Yield Prediction": "Yield Prediction",
+      "Weather Monitoring": "Weather Monitoring",
+      "Soil Health Insights": "Soil Health Insights",
+      "Market Prices": "Market Prices",
+      "Multi-Language Support": "Multi-Language Support",
+      "Mobile Friendly": "Mobile Friendly",
+      "Get personalized crop recommendations based on your soil and climate conditions.": "Get personalized crop recommendations based on your soil and climate conditions.",
+      "Upload leaf images to instantly detect diseases and get treatment advice.": "Upload leaf images to instantly detect diseases and get treatment advice.",
+      "Predict your crop yield accurately using advanced ML algorithms.": "Predict your crop yield accurately using advanced ML algorithms.",
+      "Real-time weather updates and forecasts tailored for farming.": "Real-time weather updates and forecasts tailored for farming.",
+      "Analyze your soil health and get recommendations for improvement.": "Analyze your soil health and get recommendations for improvement.",
+      "Stay updated with current market prices for different crops.": "Stay updated with current market prices for different crops.",
+      "Use the platform in English, Hindi, or Marathi.": "Use the platform in English, Hindi, or Marathi.",
+      "Access all features on your mobile device.": "Access all features on your mobile device.",
+      
+      // ========== DASHBOARD ==========
+      "Welcome back": "Welcome back",
+      "Here's your farming dashboard": "Here's your farming dashboard",
+      "Today's Weather": "Today's Weather",
+      "Recommended Crop": "Recommended Crop",
+      "Soil Moisture": "Soil Moisture",
+      "Recent Predictions": "Recent Predictions",
+      "Quick Actions": "Quick Actions",
+      "New Crop Prediction": "New Crop Prediction",
+      "Upload for Disease Check": "Upload for Disease Check",
+      "Check Weather Forecast": "Check Weather Forecast",
+      "View Market Prices": "View Market Prices",
+      "Recent Activities": "Recent Activities",
+      "Crop Prediction": "Crop Prediction",
+      "Disease Detection": "Disease Detection",
+      "Weather Check": "Weather Check",
+      "Market Price Update": "Market Price Update",
+      "All crops": "All crops",
+      "Crop": "Crop",
+      
+      // ========== WEATHER PAGE ==========
+      "Weather Information": "Weather Information",
+      "Enter Indian city name...": "Enter Indian city name...",
+      "Search": "Search",
+      "Use my location": "Use my location",
+      "Refresh": "Refresh",
+      "Feels like": "Feels like",
+      "Humidity": "Humidity",
+      "Wind": "Wind",
+      "Pressure": "Pressure",
+      "UV Index": "UV Index",
+      "3-Day Forecast": "3-Day Forecast",
+      "Air Quality": "Air Quality",
+      
+      // ========== MARKET PAGE ==========
+      "Real-time mandi prices across India": "Real-time mandi prices across India",
+      "Total Markets": "Total Markets",
+      "Average Price": "Average Price",
+      "Highest Price": "Highest Price",
+      "Lowest Price": "Lowest Price",
+      "Filters": "Filters",
+      "Show": "Show",
+      "Hide": "Hide",
+      "Search market or crop...": "Search market or crop...",
+      "Showing": "Showing",
+      "results": "results",
+      "State": "State",
+      "Market": "Market",
+      "Min Price": "Min Price",
+      "Max Price": "Max Price",
+      "Avg Price": "Avg Price",
+      "Trend": "Trend",
+      "Updated": "Updated",
+      "No market data available": "No market data available",
+      "Try selecting different filters": "Try selecting different filters",
+      "Market Information": "Market Information",
+      "Prices are in ₹ per quintal. Data sourced from data.gov.in (Ministry of Agriculture & Farmers Welfare). Updated daily from regulated markets across India.": "Prices are in ₹ per quintal. Data sourced from data.gov.in (Ministry of Agriculture & Farmers Welfare). Updated daily from regulated markets across India.",
+      "Last updated": "Last updated",
+      "Showing mock data for demonstration. The API will work once data is available.": "Showing mock data for demonstration. The API will work once data is available.",
+      "Failed to fetch market data. Please try again later.": "Failed to fetch market data. Please try again later.",
+      
+      // ========== GOVERNMENT SCHEMES ==========
+      "PM-KISAN Samman Nidhi": "PM-KISAN Samman Nidhi",
+      "Income support of ₹6000 per year to farmer families": "Income support of ₹6000 per year to farmer families",
+      "Ongoing": "Ongoing",
+      "Soil Health Card Scheme": "Soil Health Card Scheme",
+      "Free soil testing and recommendations": "Free soil testing and recommendations",
+      "Apply Now": "Apply Now",
+      "Pradhan Mantri Fasal Bima Yojana": "Pradhan Mantri Fasal Bima Yojana",
+      "Crop insurance scheme for farmers": "Crop insurance scheme for farmers",
+      "Seasonal": "Seasonal",
+      "Jeevan Pramaan": "Jeevan Pramaan",
+      "Digital life certificate for pensioners": "Digital life certificate for pensioners",
+      "Annual": "Annual",
+      "National Social Assistance Programme (NSAP)": "National Social Assistance Programme (NSAP)",
+      "Social security for elderly, widows, disabled": "Social security for elderly, widows, disabled",
+      "Agristack": "Agristack",
+      "Digital agriculture platform for farmers": "Digital agriculture platform for farmers",
+      "New": "New",
+      "PM Kisan Maan Dhan Yojana": "PM Kisan Maan Dhan Yojana",
+      "Pension scheme for small and marginal farmers": "Pension scheme for small and marginal farmers",
+      "Pradhan Mantri Krishi Sinchai Yojana": "Pradhan Mantri Krishi Sinchai Yojana",
+      "Improve water use efficiency and expand irrigation": "Improve water use efficiency and expand irrigation",
+      "PM-KUSUM Scheme": "PM-KUSUM Scheme",
+      "Solar pumps and grid-connected solar power for farmers": "Solar pumps and grid-connected solar power for farmers",
+      
+      // ========== WEATHER ALERTS ==========
+      "Weather & Crop Alerts": "Weather & Crop Alerts",
+      "Weather": "Weather",
+      "Pest Advisories": "Pest Advisories",
+      "Fall Armyworm Advisory": "Fall Armyworm Advisory",
+      "Location": "Location",
+      "Monitor maize and sorghum crops for fall armyworm. Use recommended IPM practices.": "Monitor maize and sorghum crops for fall armyworm. Use recommended IPM practices.",
+      "Source": "Source",
+      "Plant Protection Advisor": "Plant Protection Advisor",
+      "Aphid Alert": "Aphid Alert",
+      "Aphids active in wheat and mustard crops. Regular monitoring advised.": "Aphids active in wheat and mustard crops. Regular monitoring advised.",
+      "Brown Plant Hopper": "Brown Plant Hopper",
+      "BPH incidence in paddy. Monitor and apply recommended controls if threshold reached.": "BPH incidence in paddy. Monitor and apply recommended controls if threshold reached.",
+      "Pink Bollworm": "Pink Bollworm",
+      "Active in cotton crops. Use pheromone traps for monitoring.": "Active in cotton crops. Use pheromone traps for monitoring.",
+      "High": "High",
+      "Medium": "Medium",
+      "Low": "Low",
+      
+      // ========== WEATHER ALERTS FOOTER ==========
+      "Data sourced from Open-Meteo weather API and seasonal models.": "Data sourced from Open-Meteo weather API and seasonal models.",
+      "active advisory(ies)": "active advisory(ies)",
+      "For official IMD alerts, visit": "For official IMD alerts, visit",
+      
+      // ========== ADDITIONAL SCHEMES SECTION ==========
+      "Additional Farmer Welfare Schemes": "Additional Farmer Welfare Schemes",
+      "Official Portal": "Official Portal",
+      "Click on any scheme card to visit the official government portal.": "Click on any scheme card to visit the official government portal.",
+      "For more schemes, visit": "For more schemes, visit",
+      
+      // ========== FOOTER ==========
+      "Quick Links": "Quick Links",
+      "Contact Us": "Contact Us",
+      "All rights reserved": "All rights reserved",
+      "Made for Smart Agriculture": "Made for Smart Agriculture",
+      "Terms of Service": "Terms of Service",
+      "Disclaimer": "Disclaimer",
+      "Help Center": "Help Center",
+      "FAQs": "FAQs",
+      "Government Schemes": "Government Schemes",
+      "Contact Support": "Contact Support",
+      "Toll Free: 1800-180-1551": "Toll Free: 1800-180-1551",
+      "Email: support@harvestify.gov.in": "Email: support@harvestify.gov.in",
+      "Hours: Mon-Sat 9:00 AM - 6:00 PM": "Hours: Mon-Sat 9:00 AM - 6:00 PM",
+      
+      // ========== MARATHI/HINDI SPECIFIC KEYS (for footer) ==========
+      "शेतकरी समर्थन": "Farmer Support",
+      "आमच्याशी संपर्क साधा": "Contact Us",
+      
+      // ========== LANGUAGE SWITCHER ==========
+      "Select Language": "Select Language",
+      "English": "English",
+      "Hindi": "हिंदी",
+      "Marathi": "मराठी",
+      
+      // ========== 404 PAGE ==========
+      "Page Not Found": "Page Not Found",
+      "Oops! The page you're looking for doesn't exist.": "Oops! The page you're looking for doesn't exist.",
+      "Back to Home": "Back to Home",
+      
+      // ========== ABOUT PAGE ==========
+      "About Harvestify": "About Harvestify",
+      "Empowering farmers with technology for a better tomorrow": "Empowering farmers with technology for a better tomorrow",
+      "Our Mission": "Our Mission",
+      "Our Vision": "Our Vision",
+      "Our Team": "Our Team",
+      "Dedicated Team": "Dedicated Team",
+      
+      // ========== CHATBOT SECTION ==========
+      "chat_welcome": "🌾 Hello! I'm your Harvestify AI Assistant. Ask me anything about farming, crops, pests, government schemes, or market prices!",
+      "chat_placeholder": "Ask me anything about farming...",
+      "chat_clear": "Clear chat",
+      "chat_clear_confirm": "Are you sure you want to clear chat history?",
+      "chat_quick_questions": "Quick questions:",
+      "chat_voice_tip": "🎤 Click microphone to speak in Hindi or Marathi",
+      "chat_listening": "Listening... Speak now",
+      
+      // ========== COMMON ==========
+      "Submit": "Submit",
+      "Cancel": "Cancel",
+      "Save": "Save",
+      "Delete": "Delete",
+      "Edit": "Edit",
+      "Loading...": "Loading...",
+      "Error": "Error",
+      "Success": "Success",
+      "Warning": "Warning",
+      "Info": "Info"
+    }
+  },
+  hi: {
+    translation: {
+      // ========== NAVIGATION ==========
+      "Home": "होम",
+      "Features": "विशेषताएँ",
+      "Dashboard": "डैशबोर्ड",
+      "About": "हमारे बारे में",
+      "Login": "लॉग इन",
+      "Register": "पंजीकरण",
+      "Logout": "लॉग आउट",
+      "Profile": "प्रोफाइल",
+      "AI Assistant": "AI सहायक",
+      
+      // ========== HERO SECTION ==========
+      "Harvestify": "हार्वेस्टिफाई",
+      "Smart Farming Assistance for Better Crop Decisions": "बेहतर फसल निर्णयों के लिए स्मार्ट कृषि सहायता",
+      "Helping farmers predict crops, detect diseases, and improve yield using data-driven insights.": "डेटा-संचालित अंतर्दृष्टि का उपयोग करके किसानों को फसलों की भविष्यवाणी, बीमारियों का पता लगाने और उपज में सुधार करने में मदद करना।",
+      "Get Started": "शुरू करें",
+      "Explore Dashboard": "डैशबोर्ड देखें",
+      "Happy Farmers": "खुश किसान",
+      "Crops Analyzed": "विश्लेषित फसलें",
+      "Accuracy Rate": "सटीकता दर",
+      
+      // ========== FEATURES SECTION ==========
+      "Our Features": "हमारी विशेषताएँ",
+      "Everything you need to make informed farming decisions": "सूचित कृषि निर्णय लेने के लिए आपको जो कुछ भी चाहिए",
+      "Crop Recommendation": "फसल अनुशंसा",
+      "Disease Detection": "रोग का पता लगाना",
+      "Yield Prediction": "उपज भविष्यवाणी",
+      "Weather Monitoring": "मौसम निगरानी",
+      "Soil Health Insights": "मृदा स्वास्थ्य जानकारी",
+      "Market Prices": "बाजार भाव",
+      "Multi-Language Support": "बहु-भाषा समर्थन",
+      "Mobile Friendly": "मोबाइल के अनुकूल",
+      "Get personalized crop recommendations based on your soil and climate conditions.": "अपनी मिट्टी और जलवायु परिस्थितियों के आधार पर व्यक्तिगत फसल अनुशंसाएँ प्राप्त करें।",
+      "Upload leaf images to instantly detect diseases and get treatment advice.": "बीमारियों का तुरंत पता लगाने और उपचार सलाह पाने के लिए पत्तियों की छवियां अपलोड करें।",
+      "Predict your crop yield accurately using advanced ML algorithms.": "उन्नत एमएल एल्गोरिदम का उपयोग करके अपनी फसल की पैदावार का सटीक अनुमान लगाएं।",
+      "Real-time weather updates and forecasts tailored for farming.": "खेती के लिए तैयार किए गए वास्तविक समय के मौसम अपडेट और पूर्वानुमान।",
+      "Analyze your soil health and get recommendations for improvement.": "अपनी मिट्टी के स्वास्थ्य का विश्लेषण करें और सुधार के लिए सिफारिशें प्राप्त करें।",
+      "Stay updated with current market prices for different crops.": "विभिन्न फसलों के वर्तमान बाजार मूल्यों से अपडेट रहें।",
+      "Use the platform in English, Hindi, or Marathi.": "प्लेटफॉर्म का उपयोग अंग्रेजी, हिंदी या मराठी में करें।",
+      "Access all features on your mobile device.": "अपने मोबाइल डिवाइस पर सभी सुविधाओं का उपयोग करें।",
+      
+      // ========== DASHBOARD ==========
+      "Welcome back": "वापस स्वागत है",
+      "Here's your farming dashboard": "आपका कृषि डैशबोर्ड",
+      "Today's Weather": "आज का मौसम",
+      "Recommended Crop": "अनुशंसित फसल",
+      "Soil Moisture": "मृदा नमी",
+      "Recent Predictions": "हालिया भविष्यवाणियाँ",
+      "Quick Actions": "त्वरित कार्रवाई",
+      "New Crop Prediction": "नई फसल भविष्यवाणी",
+      "Upload for Disease Check": "रोग जांच के लिए अपलोड करें",
+      "Check Weather Forecast": "मौसम पूर्वानुमान देखें",
+      "View Market Prices": "बाजार भाव देखें",
+      "Recent Activities": "हालिया गतिविधियाँ",
+      "Crop Prediction": "फसल भविष्यवाणी",
+      "Disease Detection": "रोग का पता लगाना",
+      "Weather Check": "मौसम जांच",
+      "Market Price Update": "बाजार मूल्य अपडेट",
+      "All crops": "सभी फसलें",
+      "Crop": "फसल",
+      
+      // ========== WEATHER PAGE ==========
+      "Weather Information": "मौसम की जानकारी",
+      "Enter Indian city name...": "भारतीय शहर का नाम दर्ज करें...",
+      "Search": "खोजें",
+      "Use my location": "मेरा स्थान उपयोग करें",
+      "Refresh": "रिफ्रेश",
+      "Feels like": "महसूस होता है",
+      "Humidity": "आर्द्रता",
+      "Wind": "हवा",
+      "Pressure": "दबाव",
+      "UV Index": "यूवी सूचकांक",
+      "3-Day Forecast": "3 दिन का पूर्वानुमान",
+      "Air Quality": "वायु गुणवत्ता",
+      
+      // ========== MARKET PAGE ==========
+      "Real-time mandi prices across India": "भारत भर में रियल-टाइम मंडी भाव",
+      "Total Markets": "कुल बाजार",
+      "Average Price": "औसत मूल्य",
+      "Highest Price": "उच्चतम मूल्य",
+      "Lowest Price": "न्यूनतम मूल्य",
+      "Filters": "फ़िल्टर",
+      "Show": "दिखाएं",
+      "Hide": "छिपाएं",
+      "Search market or crop...": "बाजार या फसल खोजें...",
+      "Showing": "दिखा रहे हैं",
+      "results": "परिणाम",
+      "State": "राज्य",
+      "Market": "बाजार",
+      "Min Price": "न्यूनतम मूल्य",
+      "Max Price": "अधिकतम मूल्य",
+      "Avg Price": "औसत मूल्य",
+      "Trend": "रुझान",
+      "Updated": "अपडेट किया गया",
+      "No market data available": "कोई बाजार डेटा उपलब्ध नहीं",
+      "Try selecting different filters": "विभिन्न फ़िल्टर चुनने का प्रयास करें",
+      "Market Information": "बाजार जानकारी",
+      "Prices are in ₹ per quintal. Data sourced from data.gov.in (Ministry of Agriculture & Farmers Welfare). Updated daily from regulated markets across India.": "मूल्य ₹ प्रति क्विंटल में हैं। डेटा data.gov.in (कृषि एवं किसान कल्याण मंत्रालय) से लिया गया है। भारत भर के विनियमित बाजारों से प्रतिदिन अपडेट किया जाता है।",
+      "Last updated": "अंतिम अपडेट",
+      "Showing mock data for demonstration. The API will work once data is available.": "प्रदर्शन के लिए नकली डेटा दिखा रहे हैं। डेटा उपलब्ध होने पर API काम करेगा।",
+      "Failed to fetch market data. Please try again later.": "बाजार डेटा प्राप्त करने में विफल। कृपया बाद में पुनः प्रयास करें।",
+      
+      // ========== GOVERNMENT SCHEMES ==========
+      "PM-KISAN Samman Nidhi": "पीएम-किसान सम्मान निधि",
+      "Income support of ₹6000 per year to farmer families": "किसान परिवारों को ₹6000 प्रति वर्ष की आय सहायता",
+      "Ongoing": "जारी",
+      "Soil Health Card Scheme": "मृदा स्वास्थ्य कार्ड योजना",
+      "Free soil testing and recommendations": "मुफ्त मृदा परीक्षण और सिफारिशें",
+      "Apply Now": "अभी आवेदन करें",
+      "Pradhan Mantri Fasal Bima Yojana": "प्रधानमंत्री फसल बीमा योजना",
+      "Crop insurance scheme for farmers": "किसानों के लिए फसल बीमा योजना",
+      "Seasonal": "मौसमी",
+      "Jeevan Pramaan": "जीवन प्रमाण",
+      "Digital life certificate for pensioners": "पेंशनभोगियों के लिए डिजिटल जीवन प्रमाण पत्र",
+      "Annual": "वार्षिक",
+      "National Social Assistance Programme (NSAP)": "राष्ट्रीय सामाजिक सहायता कार्यक्रम (एनएसएपी)",
+      "Social security for elderly, widows, disabled": "वृद्धों, विधवाओं, विकलांगों के लिए सामाजिक सुरक्षा",
+      "Agristack": "एग्रीस्टैक",
+      "Digital agriculture platform for farmers": "किसानों के लिए डिजिटल कृषि मंच",
+      "New": "नया",
+      "PM Kisan Maan Dhan Yojana": "पीएम किसान मान धन योजना",
+      "Pension scheme for small and marginal farmers": "लघु और सीमांत किसानों के लिए पेंशन योजना",
+      "Pradhan Mantri Krishi Sinchai Yojana": "प्रधानमंत्री कृषि सिंचाई योजना",
+      "Improve water use efficiency and expand irrigation": "जल उपयोग दक्षता में सुधार और सिंचाई का विस्तार",
+      "PM-KUSUM Scheme": "पीएम-कुसुम योजना",
+      "Solar pumps and grid-connected solar power for farmers": "किसानों के लिए सौर पंप और ग्रिड से जुड़ी सौर ऊर्जा",
+      
+      // ========== WEATHER ALERTS ==========
+      "Weather & Crop Alerts": "मौसम और फसल अलर्ट",
+      "Weather": "मौसम",
+      "Pest Advisories": "कीट सलाह",
+      "Fall Armyworm Advisory": "फॉल आर्मीवर्म सलाह",
+      "Location": "स्थान",
+      "Monitor maize and sorghum crops for fall armyworm. Use recommended IPM practices.": "मक्का और ज्वार की फसलों में फॉल आर्मीवर्म की निगरानी करें। अनुशंसित आईपीएम पद्धतियों का उपयोग करें।",
+      "Source": "स्रोत",
+      "Plant Protection Advisor": "पादप संरक्षण सलाहकार",
+      "Aphid Alert": "एफिड अलर्ट",
+      "Aphids active in wheat and mustard crops. Regular monitoring advised.": "गेहूं और सरसों की फसलों में एफिड सक्रिय। नियमित निगरानी की सलाह दी जाती है।",
+      "Brown Plant Hopper": "ब्राउन प्लांट हॉपर",
+      "BPH incidence in paddy. Monitor and apply recommended controls if threshold reached.": "धान में बीपीएच का प्रकोप। निगरानी करें और सीमा पार होने पर अनुशंसित नियंत्रण लागू करें।",
+      "Pink Bollworm": "गुलाबी सुंडी",
+      "Active in cotton crops. Use pheromone traps for monitoring.": "कपास की फसलों में सक्रिय। निगरानी के लिए फेरोमोन ट्रैप का उपयोग करें।",
+      "High": "उच्च",
+      "Medium": "मध्यम",
+      "Low": "निम्न",
+      
+      // ========== WEATHER ALERTS FOOTER ==========
+      "Data sourced from Open-Meteo weather API and seasonal models.": "डेटा ओपन-मेटियो मौसम एपीआई और मौसमी मॉडल से प्राप्त किया गया है।",
+      "active advisory(ies)": "सक्रिय सलाह",
+      "For official IMD alerts, visit": "आधिकारिक आईएमडी अलर्ट के लिए, देखें",
+      
+      // ========== ADDITIONAL SCHEMES SECTION ==========
+      "Additional Farmer Welfare Schemes": "अतिरिक्त किसान कल्याण योजनाएं",
+      "Official Portal": "आधिकारिक पोर्टल",
+      "Click on any scheme card to visit the official government portal.": "आधिकारिक सरकारी पोर्टल पर जाने के लिए किसी भी योजना कार्ड पर क्लिक करें।",
+      "For more schemes, visit": "अधिक योजनाओं के लिए, देखें",
+      
+      // ========== FOOTER ==========
+      "Quick Links": "त्वरित लिंक",
+      "Contact Us": "संपर्क करें",
+      "All rights reserved": "सर्वाधिकार सुरक्षित",
+      "Made for Smart Agriculture": "स्मार्ट कृषि के लिए बनाया गया",
+      "Terms of Service": "सेवा की शर्तें",
+      "Disclaimer": "अस्वीकरण",
+      "Help Center": "सहायता केंद्र",
+      "FAQs": "सामान्य प्रश्न",
+      "Government Schemes": "सरकारी योजनाएं",
+      "Contact Support": "सहायता से संपर्क करें",
+      "Toll Free: 1800-180-1551": "टोल फ्री: 1800-180-1551",
+      "Email: support@harvestify.gov.in": "ईमेल: support@harvestify.gov.in",
+      "Hours: Mon-Sat 9:00 AM - 6:00 PM": "समय: सोम-शनि सुबह 9:00 - शाम 6:00",
+      
+      // ========== MARATHI/HINDI SPECIFIC KEYS (for footer) ==========
+      "शेतकरी समर्थन": "शेतकरी समर्थन",
+      "आमच्याशी संपर्क साधा": "संपर्क करें",
+      
+      // ========== LANGUAGE SWITCHER ==========
+      "Select Language": "भाषा चुनें",
+      "English": "English",
+      "Hindi": "हिंदी",
+      "Marathi": "मराठी",
+      
+      // ========== 404 PAGE ==========
+      "Page Not Found": "पृष्ठ नहीं मिला",
+      "Oops! The page you're looking for doesn't exist.": "ओह! आप जिस पृष्ठ की तलाश कर रहे हैं वह मौजूद नहीं है।",
+      "Back to Home": "होम पेज पर वापस जाएं",
+      
+      // ========== ABOUT PAGE ==========
+      "About Harvestify": "हार्वेस्टिफाई के बारे में",
+      "Empowering farmers with technology for a better tomorrow": "बेहतर कल के लिए किसानों को प्रौद्योगिकी से सशक्त बनाना",
+      "Our Mission": "हमारा मिशन",
+      "Our Vision": "हमारा दृष्टिकोण",
+      "Our Team": "हमारी टीम",
+      "Dedicated Team": "समर्पित टीम",
+      
+      // ========== CHATBOT SECTION ==========
+      "chat_welcome": "🌾 नमस्ते! मैं आपका हार्वेस्टिफाई AI सहायक हूँ। कृषि, फसलों, कीटों, सरकारी योजनाओं या बाजार भावों के बारे में मुझसे कुछ भी पूछें!",
+      "chat_placeholder": "कृषि के बारे में कुछ भी पूछें...",
+      "chat_clear": "चैट साफ़ करें",
+      "chat_clear_confirm": "क्या आप चैट इतिहास साफ़ करना चाहते हैं?",
+      "chat_quick_questions": "त्वरित प्रश्न:",
+      "chat_voice_tip": "🎤 हिंदी या मराठी में बोलने के लिए माइक्रोफोन पर क्लिक करें",
+      "chat_listening": "सुन रहा हूँ... अब बोलें",
+      
+      // ========== COMMON ==========
+      "Submit": "जमा करें",
+      "Cancel": "रद्द करें",
+      "Save": "सहेजें",
+      "Delete": "हटाएं",
+      "Edit": "संपादित करें",
+      "Loading...": "लोड हो रहा है...",
+      "Error": "त्रुटि",
+      "Success": "सफलता",
+      "Warning": "चेतावनी",
+      "Info": "जानकारी"
+    }
+  },
+  mr: {
+    translation: {
+      // ========== NAVIGATION ==========
+      "Home": "मुखपृष्ठ",
+      "Features": "वैशिष्ट्ये",
+      "Dashboard": "डॅशबोर्ड",
+      "About": "आमच्याबद्दल",
+      "Login": "लॉगिन",
+      "Register": "नोंदणी",
+      "Logout": "लॉगआउट",
+      "Profile": "प्रोफाइल",
+      "AI Assistant": "AI सहाय्यक",
+      
+      // ========== HERO SECTION ==========
+      "Harvestify": "हार्वेस्टिफाय",
+      "Smart Farming Assistance for Better Crop Decisions": "चांगल्या पीक निर्णयांसाठी स्मार्ट शेती सहाय्य",
+      "Helping farmers predict crops, detect diseases, and improve yield using data-driven insights.": "डेटा-चालित अंतर्दृष्टी वापरून शेतकऱ्यांना पिकांचा अंदाज, रोग शोधण्यात आणि उत्पन्न सुधारण्यात मदत करणे.",
+      "Get Started": "सुरू करा",
+      "Explore Dashboard": "डॅशबोर्ड एक्सप्लोर करा",
+      "Happy Farmers": "आनंदी शेतकरी",
+      "Crops Analyzed": "विश्लेषित पिके",
+      "Accuracy Rate": "अचूकता दर",
+      
+      // ========== FEATURES SECTION ==========
+      "Our Features": "आमची वैशिष्ट्ये",
+      "Everything you need to make informed farming decisions": "माहितीपूर्ण शेती निर्णय घेण्यासाठी आवश्यक असलेली प्रत्येक गोष्ट",
+      "Crop Recommendation": "पीक शिफारस",
+      "Disease Detection": "रोग शोध",
+      "Yield Prediction": "उत्पन्न अंदाज",
+      "Weather Monitoring": "हवामान निरीक्षण",
+      "Soil Health Insights": "माती आरोग्य माहिती",
+      "Market Prices": "बाजार भाव",
+      "Multi-Language Support": "बहु-भाषा समर्थन",
+      "Mobile Friendly": "मोबाइलसाठी अनुकूल",
+      "Get personalized crop recommendations based on your soil and climate conditions.": "तुमच्या माती आणि हवामान परिस्थितीनुसार वैयक्तिक पीक शिफारसी मिळवा.",
+      "Upload leaf images to instantly detect diseases and get treatment advice.": "रोग त्वरित शोधण्यासाठी आणि उपचार सल्ला मिळवण्यासाठी पानांच्या प्रतिमा अपलोड करा.",
+      "Predict your crop yield accurately using advanced ML algorithms.": "प्रगत ML अल्गोरिदम वापरून तुमच्या पिकाच्या उत्पन्नाचा अचूक अंदाज लावा.",
+      "Real-time weather updates and forecasts tailored for farming.": "शेतीसाठी तयार केलेले रीअल-टाइम हवामान अद्यतने आणि अंदाज.",
+      "Analyze your soil health and get recommendations for improvement.": "तुमच्या मातीच्या आरोग्याचे विश्लेषण करा आणि सुधारणेसाठी शिफारसी मिळवा.",
+      "Stay updated with current market prices for different crops.": "विविध पिकांच्या सध्याच्या बाजारभावांसह अद्ययावत रहा.",
+      "Use the platform in English, Hindi, or Marathi.": "इंग्रजी, हिंदी किंवा मराठीत व्यासपीठ वापरा.",
+      "Access all features on your mobile device.": "तुमच्या मोबाइल डिव्हाइसवर सर्व वैशिष्ट्यांमध्ये प्रवेश करा.",
+      
+      // ========== DASHBOARD ==========
+      "Welcome back": "पुन्हा स्वागत आहे",
+      "Here's your farming dashboard": "तुमचा शेती डॅशबोर्ड",
+      "Today's Weather": "आजचे हवामान",
+      "Recommended Crop": "शिफारस केलेले पीक",
+      "Soil Moisture": "मातीतील ओलावा",
+      "Recent Predictions": "अलीकडील अंदाज",
+      "Quick Actions": "द्रुत क्रिया",
+      "New Crop Prediction": "नवीन पीक अंदाज",
+      "Upload for Disease Check": "रोग तपासणीसाठी अपलोड करा",
+      "Check Weather Forecast": "हवामान अंदाज तपासा",
+      "View Market Prices": "बाजार भाव पहा",
+      "Recent Activities": "अलीकडील क्रियाकलाप",
+      "Crop Prediction": "पीक अंदाज",
+      "Disease Detection": "रोग शोध",
+      "Weather Check": "हवामान तपासणी",
+      "Market Price Update": "बाजार भाव अद्यतन",
+      "All crops": "सर्व पिके",
+      "Crop": "पीक",
+      
+      // ========== WEATHER PAGE ==========
+      "Weather Information": "हवामान माहिती",
+      "Enter Indian city name...": "भारतीय शहराचे नाव प्रविष्ट करा...",
+      "Search": "शोधा",
+      "Use my location": "माझे स्थान वापरा",
+      "Refresh": "रिफ्रेश",
+      "Feels like": "असे वाटते",
+      "Humidity": "आर्द्रता",
+      "Wind": "वारा",
+      "Pressure": "दाब",
+      "UV Index": "यूव्ही निर्देशांक",
+      "3-Day Forecast": "३ दिवसांचा अंदाज",
+      "Air Quality": "हवा गुणवत्ता",
+      
+      // ========== MARKET PAGE ==========
+      "Real-time mandi prices across India": "भारतभरातील रीअल-टाइम मंडी भाव",
+      "Total Markets": "एकूण बाजार",
+      "Average Price": "सरासरी किंमत",
+      "Highest Price": "सर्वोच्च किंमत",
+      "Lowest Price": "सर्वात कमी किंमत",
+      "Filters": "फिल्टर",
+      "Show": "दाखवा",
+      "Hide": "लपवा",
+      "Search market or crop...": "बाजार किंवा पीक शोधा...",
+      "Showing": "दाखवत आहे",
+      "results": "परिणाम",
+      "State": "राज्य",
+      "Market": "बाजार",
+      "Min Price": "किमान किंमत",
+      "Max Price": "कमाल किंमत",
+      "Avg Price": "सरासरी किंमत",
+      "Trend": "कल",
+      "Updated": "अपडेट केले",
+      "No market data available": "बाजार डेटा उपलब्ध नाही",
+      "Try selecting different filters": "वेगळे फिल्टर निवडण्याचा प्रयत्न करा",
+      "Market Information": "बाजार माहिती",
+      "Prices are in ₹ per quintal. Data sourced from data.gov.in (Ministry of Agriculture & Farmers Welfare). Updated daily from regulated markets across India.": "किंमती ₹ प्रति क्विंटल आहेत. डेटा data.gov.in (कृषी आणि शेतकरी कल्याण मंत्रालय) मधून स्रोतित. भारतभरातील नियमित बाजारपेठांमधून दररोज अपडेट केले जाते.",
+      "Last updated": "शेवटचे अपडेट",
+      "Showing mock data for demonstration. The API will work once data is available.": "प्रात्यक्षिकासाठी नकली डेटा दाखवत आहे. डेटा उपलब्ध झाल्यावर API कार्य करेल.",
+      "Failed to fetch market data. Please try again later.": "बाजार डेटा मिळविण्यात अयशस्वी. कृपया नंतर पुन्हा प्रयत्न करा.",
+      
+      // ========== GOVERNMENT SCHEMES ==========
+      "PM-KISAN Samman Nidhi": "पीएम-किसान सन्मान निधी",
+      "Income support of ₹6000 per year to farmer families": "शेतकरी कुटुंबांना दरवर्षी ₹6000 उत्पन्न सहाय्य",
+      "Ongoing": "सुरू",
+      "Soil Health Card Scheme": "मृदा आरोग्य कार्ड योजना",
+      "Free soil testing and recommendations": "मोफत माती चाचणी आणि शिफारसी",
+      "Apply Now": "आता अर्ज करा",
+      "Pradhan Mantri Fasal Bima Yojana": "प्रधानमंत्री पीक विमा योजना",
+      "Crop insurance scheme for farmers": "शेतकऱ्यांसाठी पीक विमा योजना",
+      "Seasonal": "हंगामी",
+      "Jeevan Pramaan": "जीवन प्रमाण",
+      "Digital life certificate for pensioners": "निवृत्तीवेतनधारकांसाठी डिजिटल जीवन प्रमाणपत्र",
+      "Annual": "वार्षिक",
+      "National Social Assistance Programme (NSAP)": "राष्ट्रीय सामाजिक सहाय्य कार्यक्रम (एनएसएपी)",
+      "Social security for elderly, widows, disabled": "वृद्ध, विधवा, अपंग यांच्यासाठी सामाजिक सुरक्षा",
+      "Agristack": "अॅग्रीस्टॅक",
+      "Digital agriculture platform for farmers": "शेतकऱ्यांसाठी डिजिटल कृषी व्यासपीठ",
+      "New": "नवीन",
+      "PM Kisan Maan Dhan Yojana": "पीएम किसान मान धन योजना",
+      "Pension scheme for small and marginal farmers": "लघु आणि सीमांत शेतकऱ्यांसाठी पेन्शन योजना",
+      "Pradhan Mantri Krishi Sinchai Yojana": "प्रधानमंत्री कृषी सिंचाई योजना",
+      "Improve water use efficiency and expand irrigation": "पाणी वापर कार्यक्षमता सुधारणे आणि सिंचन विस्तार",
+      "PM-KUSUM Scheme": "पीएम-कुसुम योजना",
+      "Solar pumps and grid-connected solar power for farmers": "शेतकऱ्यांसाठी सौर पंप आणि ग्रीड-कनेक्टेड सौर ऊर्जा",
+      
+      // ========== WEATHER ALERTS ==========
+      "Weather & Crop Alerts": "हवामान आणि पीक अलर्ट",
+      "Weather": "हवामान",
+      "Pest Advisories": "कीटक सल्ला",
+      "Fall Armyworm Advisory": "फॉल आर्मीवर्म सल्ला",
+      "Location": "स्थान",
+      "Monitor maize and sorghum crops for fall armyworm. Use recommended IPM practices.": "मका आणि ज्वारी पिकांमध्ये फॉल आर्मीवर्मचे निरीक्षण करा. शिफारस केलेल्या IPM पद्धती वापरा.",
+      "Source": "स्रोत",
+      "Plant Protection Advisor": "वनस्पती संरक्षण सल्लागार",
+      "Aphid Alert": "ॲफिड अलर्ट",
+      "Aphids active in wheat and mustard crops. Regular monitoring advised.": "गहू आणि मोहरी पिकांमध्ये ॲफिड सक्रिय. नियमित निरीक्षणाचा सल्ला.",
+      "Brown Plant Hopper": "ब्राऊन प्लांट हॉपर",
+      "BPH incidence in paddy. Monitor and apply recommended controls if threshold reached.": "भातामध्ये BPH चा प्रादुर्भाव. निरीक्षण करा आणि मर्यादा ओलांडल्यास शिफारस केलेले नियंत्रण लागू करा.",
+      "Pink Bollworm": "पिंक बॉलवर्म",
+      "Active in cotton crops. Use pheromone traps for monitoring.": "कापूस पिकांमध्ये सक्रिय. निरीक्षणासाठी फेरोमोन सापळे वापरा.",
+      "High": "उच्च",
+      "Medium": "मध्यम",
+      "Low": "निम्न",
+      
+      // ========== WEATHER ALERTS FOOTER ==========
+      "Data sourced from Open-Meteo weather API and seasonal models.": "डेटा ओपन-मेटियो हवामान API आणि हंगामी मॉडेल्समधून स्रोतित.",
+      "active advisory(ies)": "सक्रिय सल्ला",
+      "For official IMD alerts, visit": "अधिकृत IMD अलर्टसाठी, भेट द्या",
+      
+      // ========== ADDITIONAL SCHEMES SECTION ==========
+      "Additional Farmer Welfare Schemes": "अतिरिक्त शेतकरी कल्याण योजना",
+      "Official Portal": "अधिकृत पोर्टल",
+      "Click on any scheme card to visit the official government portal.": "अधिकृत सरकारी पोर्टलवर जाण्यासाठी कोणत्याही योजना कार्डवर क्लिक करा.",
+      "For more schemes, visit": "अधिक योजनांसाठी, भेट द्या",
+      
+      // ========== FOOTER ==========
+      "Quick Links": "द्रुत दुवे",
+      "Contact Us": "आमच्याशी संपर्क साधा",
+      "All rights reserved": "सर्व हक्क राखीव",
+      "Made for Smart Agriculture": "स्मार्ट शेतीसाठी बनविले",
+      "Terms of Service": "सेवेच्या अटी",
+      "Disclaimer": "अस्वीकरण",
+      "Help Center": "मदत केंद्र",
+      "FAQs": "वारंवार विचारले जाणारे प्रश्न",
+      "Government Schemes": "सरकारी योजना",
+      "Contact Support": "समर्थनाशी संपर्क साधा",
+      "Toll Free: 1800-180-1551": "टोल फ्री: 1800-180-1551",
+      "Email: support@harvestify.gov.in": "ईमेल: support@harvestify.gov.in",
+      "Hours: Mon-Sat 9:00 AM - 6:00 PM": "वेळ: सोम-शनि सकाळी 9:00 - संध्याकाळी 6:00",
+      
+      // ========== MARATHI/HINDI SPECIFIC KEYS (for footer) ==========
+      "शेतकरी समर्थन": "शेतकरी समर्थन",
+      "आमच्याशी संपर्क साधा": "आमच्याशी संपर्क साधा",
+      
+      // ========== LANGUAGE SWITCHER ==========
+      "Select Language": "भाषा निवडा",
+      "English": "English",
+      "Hindi": "हिंदी",
+      "Marathi": "मराठी",
+      
+      // ========== 404 PAGE ==========
+      "Page Not Found": "पृष्ठ सापडले नाही",
+      "Oops! The page you're looking for doesn't exist.": "अरेरे! आपण शोधत असलेले पृष्ठ अस्तित्वात नाही.",
+      "Back to Home": "मुखपृष्ठावर परत जा",
+      
+      // ========== ABOUT PAGE ==========
+      "About Harvestify": "हार्वेस्टिफाय बद्दल",
+      "Empowering farmers with technology for a better tomorrow": "चांगल्या उद्यासाठी शेतकऱ्यांना तंत्रज्ञानाने सक्षम करणे",
+      "Our Mission": "आमचे ध्येय",
+      "Our Vision": "आमचे दृष्टिकोन",
+      "Our Team": "आमची टीम",
+      "Dedicated Team": "समर्पित टीम",
+      
+      // ========== CHATBOT SECTION ==========
+      "chat_welcome": "🌾 नमस्कार! मी तुमचा हार्वेस्टिफाय AI सहाय्यक आहे. शेती, पिके, कीटक, सरकारी योजना किंवा बाजारभावांबद्दल मला काहीही विचारा!",
+      "chat_placeholder": "शेतीबद्दल काहीही विचारा...",
+      "chat_clear": "चॅट साफ करा",
+      "chat_clear_confirm": "तुम्हाला चॅट इतिहास साफ करायचा आहे का?",
+      "chat_quick_questions": "त्वरित प्रश्न:",
+      "chat_voice_tip": "🎤 हिंदी किंवा मराठीत बोलण्यासाठी मायक्रोफोनवर क्लिक करा",
+      "chat_listening": "ऐकतोय... आता बोला",
+      
+      // ========== COMMON ==========
+      "Submit": "सबमिट करा",
+      "Cancel": "रद्द करा",
+      "Save": "जतन करा",
+      "Delete": "हटवा",
+      "Edit": "संपादित करा",
+      "Loading...": "लोड होत आहे...",
+      "Error": "त्रुटी",
+      "Success": "यश",
+      "Warning": "चेतावणी",
+      "Info": "माहिती"
+    }
+  }
+};
+
+i18n
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    resources,
+    fallbackLng: 'en',
+    interpolation: {
+      escapeValue: false
+    },
+    detection: {
+      order: ['localStorage', 'navigator'],
+      caches: ['localStorage']
+    }
+  });
+
+i18n.on('languageChanged', (lng) => {
+  document.documentElement.lang = lng;
+  console.log('Language changed to:', lng);
+});
+
+export default i18n;

@@ -1,0 +1,261 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Poppins', 'Roboto', 'Open Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #F5F5F5;
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-300;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+  }
+}
+
+/* Dark mode transitions */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease;
+}
+
+/* Dark mode custom styles */
+.dark body {
+  background-color: #1a1a1a;
+  color: #e5e5e5;
+}
+
+.dark .card {
+  background-color: #2d2d2d;
+  color: #e5e5e5;
+}
+
+.dark .input-field {
+  background-color: #3d3d3d;
+  border-color: #4d4d4d;
+  color: #e5e5e5;
+}
+
+.dark .input-field:focus {
+  border-color: #2E7D32;
+}
+
+.dark .bg-gray-50 {
+  background-color: #2d2d2d;
+}
+
+.dark .text-gray-600 {
+  color: #b0b0b0;
+}
+
+.dark .text-gray-800 {
+  color: #ffffff;
+}
+
+.dark .border-gray-300 {
+  border-color: #4d4d4d;
+}
+
+/* Make sure buttons are visible */
+.bg-primary {
+  background-color: #2E7D32 !important;
+}
+
+.bg-accent {
+  background-color: #FFC107 !important;
+}
+
+.btn-primary {
+  background-color: #2E7D32;
+  color: white;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #1b5e20;
+}
+
+/* Pulse animation for status badges */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Gradient text utilities */
+.bg-gradient-text {
+  background: linear-gradient(135deg, #2E7D32 0%, #81C784 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Card hover effects */
+.hover-lift {
+  transition: transform 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+/* Markdown styling for chatbot */
+.markdown-content {
+  font-size: 0.875rem;
+  white-space: pre-wrap;
+}
+
+.markdown-content p {
+  margin: 0.25rem 0;
+}
+
+.markdown-content ul, 
+.markdown-content ol {
+  margin: 0.25rem 0;
+  padding-left: 1.25rem;
+}
+
+.markdown-content li {
+  margin: 0.125rem 0;
+}
+
+.markdown-content strong {
+  font-weight: 600;
+}
+
+.markdown-content code {
+  background-color: rgba(0,0,0,0.1);
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+}
+
+/* Chatbot Animations */
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out forwards;
+}
+
+.animate-bounce {
+  animation: bounce 0.5s ease-in-out infinite;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Custom Scrollbar */
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+.dark .chat-messages::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+
+.dark .chat-messages::-webkit-scrollbar-thumb {
+  background: #555;
+}
+
+/* Glass Effect */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.dark .glass-effect {
+  background: rgba(26, 26, 26, 0.95);
+}
+
+/* Clean language switcher - no extra characters */
+.language-switcher-btn {
+  font-family: inherit;
+  letter-spacing: normal;
+}
+
+.language-switcher-btn span {
+  font-weight: 500;
+}
+
+/* Remove any pseudo-elements that might add extra characters */
+.language-switcher-btn::before,
+.language-switcher-btn::after {
+  display: none !important;
+  content: none !important;
+}
