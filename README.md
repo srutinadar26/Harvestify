@@ -109,16 +109,37 @@ From **knowing what to grow** to **predicting how much you’ll harvest**, Harve
 ## 🧠 System Architecture
 
 ``` 
-
-graph TD;
-A[User] --> B[React Frontend]
-B --> C[Firebase Authentication]
-B --> D[Backend (Node.js + Express)]
-D --> E[External APIs]
-D --> F[Database (MongoDB)]
-D --> G[AI/ML Models]
-G --> H[Predictions & Insights]
-H --> B
+User
+ │
+ ▼
+React Frontend (UI Layer)
+ │
+ ├── Firebase Authentication (Login / Signup)
+ │
+ ▼
+Backend Server (Node.js + Express)
+ │
+ ├── External APIs
+ │     ├── WeatherAPI (Weather Data)
+ │     └── data.gov.in (Mandi Prices)
+ │
+ ├── AI/ML Models
+ │     ├── Crop Recommendation (Random Forest / XGBoost)
+ │     ├── Yield Prediction (LSTM)
+ │     └── Disease Detection (CNN)
+ │
+ ├── Chatbot Engine
+ │     ├── Offline Responses (Static Knowledge Base)
+ │     └── Online Responses (Real-Time Data)
+ │
+ ▼
+Database (MongoDB)
+ │
+ ▼
+Processed Insights & Predictions
+ │
+ ▼
+Frontend Dashboard (Visualization & User Interaction)
 
 ```
 
