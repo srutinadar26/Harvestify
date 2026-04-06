@@ -3,77 +3,121 @@
 ### *Your Intelligent Digital Farm Assistant*
 
 <p align="center">
-  <b>AI-Powered • Real-Time Intelligence • Farmer-Centric</b><br><br>
+  <b>AI-Powered • Real-Time • Farmer-Centric • Offline-Ready</b><br><br>
   <img src="https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/AI-Enabled-purple?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/AI-Integrated-success?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Platform-AgriTech-green?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Contributions-Welcome-blue?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" />
 </p>
 
 ---
 
 ## 🚀 Overview
 
-**Harvestify** is a full-stack AgriTech platform designed to empower farmers with **real-time data, predictive intelligence, and accessible digital tools**.
+**Harvestify** is a full-stack AgriTech platform that empowers farmers with **real-time insights, AI-driven recommendations, and intelligent automation** to make better farming decisions.
 
-It bridges the gap between **raw agricultural data and actionable decision-making** by combining weather analytics, live mandi prices, government resources, and AI-driven insights into one seamless ecosystem.
+By combining **weather intelligence, live market data, machine learning models, and user-friendly design**, Harvestify acts as a **digital farm assistant** — transforming complex agricultural data into **simple, actionable insights**.
 
-From **knowing what to grow** to **predicting how much you’ll harvest**, Harvestify transforms uncertainty into clarity.
+---
+
+## 🧠 What Makes Harvestify Powerful?
+
+> It doesn’t just show data — it **thinks, analyzes, and recommends**.
+
+* 📍 Auto-detects user location
+* 🌤️ Fetches real-time environmental data
+* 🌱 Recommends best crops
+* 📈 Predicts yield outcomes
+
+👉 All with **minimal user input**
 
 ---
 
 ## ✨ Key Features
 
-### 🌤️ Real-Time Weather Intelligence
-
-* Live weather updates (temperature, humidity, conditions)
-* Air Quality Index (AQI) monitoring
-* Multi-day forecasts
-* Location-aware detection
-* Smart alerts for sudden changes
-
----
-
-### 📊 Live Mandi Market Prices
-
-* Real-time crop prices from government datasets
-* Price trend indicators (rise, fall, stable)
-* Filters by crop, state, and location
-* Statistical insights (average, highest, lowest)
-
 ---
 
 ### 🌱 Intelligent Crop Recommendation
 
-* Suggests optimal crops based on environmental conditions
-* Powered by ML models using multiple agricultural factors
-* Provides reasoning and confidence levels
-* Enables data-driven farming decisions
+* AI-based prediction using Random Forest
+* Supports soil inputs (NPK, pH) *(optional)*
+* 📍 Auto-location detection
+* 🌤️ Weather-integrated recommendations
+* Top 3 crop suggestions with confidence %
+* Detailed crop insights (fertilizer, season, water needs)
 
 ---
 
-### 📈 Crop Yield Prediction
+### 📈 Smart Yield Prediction
 
-* Predicts future yield using historical and environmental data
-* Powered by LSTM (Long Short-Term Memory) neural networks
-* Identifies seasonal patterns and trends
-* Helps farmers plan production and maximize profitability
+* Predicts crop yield using LSTM models
+* Outputs:
 
----
-
-### 🔬 Crop Disease Detection
-
-* Image-based disease detection using deep learning (CNN)
-* Identifies plant diseases from leaf images
-* Provides treatment suggestions and preventive measures
+  * kg/acre
+  * total yield
+  * bag estimation
+* 📍 Location + 🌤️ weather auto-detection
+* Yield rating (Excellent → Poor)
+* Smart alerts based on environmental conditions
 
 ---
 
-### 🏛️ Government Schemes & Resources
+### 🔬 Disease Detection System
 
-* Access to major Indian agricultural schemes
-* Direct links to official portals
-* Simplified, farmer-friendly information cards
-* Awareness of subsidies and benefits
+* Upload crop leaf images 📷
+* CNN (MobileNetV2) for classification
+* 38+ disease categories
+* Confidence score + severity level
+* Treatment and prevention recommendations
+
+---
+
+### 🌤️ Real-Time Weather Intelligence
+
+* Live weather data (temperature, humidity, rainfall)
+* Air Quality Index (AQI)
+* Location-based auto-detection
+* Integrated across multiple modules
+
+---
+
+### 📊 Market Price Insights
+
+* Real-time mandi crop prices
+* Location-based filtering
+* Price trend analysis
+* Helps farmers make profitable selling decisions
+
+---
+
+### 🤖 Chatbot & Voice Assistant
+
+* Powered by Google Gemini AI
+* Answers agricultural queries
+* 📴 **Offline support for basic questions**
+* 🌐 **Real-time responses when connected to internet**
+* Voice-enabled interaction
+* Conversation history storage
+
+---
+
+### 🔐 Authentication & User System
+
+* Firebase Authentication
+* Email/password login
+* Phone OTP verification
+* Protected routes
+* User-specific data storage
+
+---
+
+### 📊 Dashboard & Analytics
+
+* Yield trend graphs
+* Crop comparison charts
+* Risk analysis (weather, soil, pests, market)
+* Visual insights for decision-making
 
 ---
 
@@ -82,109 +126,51 @@ From **knowing what to grow** to **predicting how much you’ll harvest**, Harve
 * English
 * Hindi (हिंदी)
 * Marathi (मराठी)
-* Seamless switching for accessibility
+* Auto-detection and seamless switching
 
 ---
 
-### 🤖 Chatbot & Voice Assistant
+## ⚙️ How It Works
 
-* Interactive chatbot for instant guidance
-* Voice-enabled interaction for ease of use
-* Works offline for general queries
-* Provides real-time responses when connected
-* Designed for low-tech accessibility
-
----
-
-### 🎨 Modern User Experience
-
-* Clean, intuitive interface
-* Fully responsive (mobile, tablet, desktop)
-* Dark & light mode support
-* Smooth animations and transitions
-* Real-time feedback and alerts
-
----
-
-## 🧠 System Architecture
-
-``` 
-User
- │
- ▼
-React Frontend (UI Layer)
- │
- ├── Firebase Authentication (Login / Signup)
- │
- ▼
-Backend Server (Node.js + Express)
- │
- ├── External APIs
- │     ├── WeatherAPI (Weather Data)
- │     └── data.gov.in (Mandi Prices)
- │
- ├── AI/ML Models
- │     ├── Crop Recommendation (Random Forest / XGBoost)
- │     ├── Yield Prediction (LSTM)
- │     └── Disease Detection (CNN)
- │
- ├── Chatbot Engine
- │     ├── Offline Responses (Static Knowledge Base)
- │     └── Online Responses (Real-Time Data)
- │
- ▼
-Database (MongoDB)
- │
- ▼
-Processed Insights & Predictions
- │
- ▼
-Frontend Dashboard (Visualization & User Interaction)
-
+```mermaid
+graph TD;
+A[User Input / Auto Location] --> B[Weather & Market APIs]
+B --> C[Backend Processing]
+C --> D[ML Models]
+D --> E[Predictions & Insights]
+E --> F[User Dashboard]
 ```
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Frontend
+### 🎨 Frontend
 
-* React
+* React 18
 * Tailwind CSS
-* React Router
-* Context API
 * Framer Motion
-* Recharts
+* Recharts / Chart.js
 * i18next
 
----
-
-### Backend
+### ⚙️ Backend
 
 * Node.js
 * Express.js
-* Firebase Authentication (secure login & signup)
+* FastAPI (for ML services)
 
----
+### 🤖 AI / ML
 
-### APIs & Services
+* Random Forest → Crop Recommendation
+* CNN (MobileNetV2) → Disease Detection
+* LSTM → Yield Prediction
 
-* WeatherAPI (real-time weather data)
-* data.gov.in (mandi market prices)
+### 🔗 APIs & Services
 
----
-
-### AI / Machine Learning
-
-* Random Forest / XGBoost — crop recommendation
-* LSTM (Long Short-Term Memory) — yield prediction
-* Convolutional Neural Networks (CNN) — disease detection
-
----
-
-### Database
-
-* MongoDB
+* WeatherAPI → Weather data
+* data.gov.in → Market prices
+* Google Gemini AI → Chatbot
+* Firebase → Authentication & Database
 
 ---
 
@@ -201,31 +187,18 @@ npm start
 
 ## 🌍 Vision
 
-To build a scalable digital agriculture ecosystem where **every farmer has access to intelligence, not just information**.
-
-Harvestify aims to transform farming into a **data-driven, predictable, and profitable practice** — especially for those in low-connectivity and resource-constrained environments.
+To build a scalable, intelligent agricultural ecosystem that enables farmers to make **confident, data-driven decisions** and improve productivity across regions.
 
 ---
 
-## 🔮 Future Scope
+## 💡 Why Harvestify?
 
-* IoT-based soil monitoring integration
-* Satellite imagery for crop analysis
-* Advanced AI advisory system
-* Hyper-local language expansion
-* Mobile app deployment
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome!
-Feel free to fork the repository, open issues, or submit pull requests to improve Harvestify.
+* 📉 Reduces farming risks
+* 📈 Improves productivity
+* 💰 Increases profitability
+* 🌍 Works even in low-connectivity environments
+* 🧠 Combines AI + real-time data seamlessly
 
 ---
 
-## 💬 Final Note
 
-> *“When farmers grow smarter, the nation grows stronger.”* 🌾🇮🇳
-
----
