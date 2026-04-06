@@ -7,172 +7,159 @@ import toast from 'react-hot-toast';
 import { useAuth } from '../../context/FirebaseAuthContext';
 import mlService from '../../services/mlService';
 import { savePrediction } from '../../services/historyService';
+import weatherService from '../../services/weatherService';  // ✅ ADD THIS IMPORT
 
 const CropRecommendation = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
-  const [loading, setLoading] = useState(false);
-  const [prediction, setPrediction] = useState(null);
-  const [error, setError] = useState(null);
-  const [saving, setSaving] = useState(false);
-  
+  const [loading, setLoading]         = useState(false);
+  const [prediction, setPrediction]   = useState(null);
+  const [error, setError]             = useState(null);
+  const [saving, setSaving]           = useState(false);
+  const [fetchingWeather, setFetchingWeather] = useState(false);
+  const [weatherFetched, setWeatherFetched]   = useState(false);
+
+  const [cityInput, setCityInput] = useState('');
   const [formData, setFormData] = useState({
-    nitrogen: '',
-    phosphorus: '',
-    potassium: '',
+    nitrogen:    '',
+    phosphorus:  '',
+    potassium:   '',
     temperature: '',
-    humidity: '',
-    ph: '',
-    rainfall: ''
+    humidity:    '',
+    ph:          '',
+    rainfall:    ''
   });
 
+  // ✅ REPLACE handleFetchWeather with this version using weatherService
+  const handleFetchWeather = async () => {
+    if (!cityInput.trim()) {
+      toast.error('Please enter your city name');
+      return;
+    }
+    setFetchingWeather(true);
+    try {
+      const result = await weatherService.getWeatherByCity(cityInput);
+      if (result.success) {
+        const w = result.weather;
+        
+        // WeatherAPI.com doesn't provide soil data, so we use sensible defaults
+        // Users can manually adjust these values if they have soil test results
+        setFormData({
+          nitrogen:    50,     // Regional average (mg/kg)
+          phosphorus:  40,     // Regional average (mg/kg)
+          potassium:   43,     // Regional average (mg/kg)
+          temperature: w.temperature,
+          humidity:    w.humidity,
+          ph:          6.5,    // Neutral soil pH (ideal for most crops)
+          rainfall:    800     // Default annual rainfall (mm) - user can adjust
+        });
+        
+        setWeatherFetched(true);
+        toast.success(`✅ Weather fetched for ${w.location}, ${w.region}`);
+      } else {
+        toast.error(result.message || 'City not found');
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Could not fetch weather. Try again.');
+    } finally {
+      setFetchingWeather(false);
+    }
+  };
+
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Validate all fields
     for (let key in formData) {
-      if (!formData[key]) {
-        toast.error(t('Please fill all fields'));
+      if (formData[key] === '') {
+        toast.error('Please fetch location data or fill all fields');
         return;
       }
     }
-
     setLoading(true);
     setError(null);
-
     try {
       const result = await mlService.predictCrop(formData);
-      
       if (result.success) {
         setPrediction({
-          crop: result.prediction,
-          confidence: result.confidence,
+          crop:           result.prediction,
+          confidence:     result.confidence,
           topPredictions: result.top_predictions,
-          recommendations: result.recommendations
         });
-        toast.success(t('Prediction complete!'));
-        
-        // Save to history if user is logged in
+        toast.success('Prediction complete!');
+
         if (currentUser) {
           setSaving(true);
-          const saveResult = await savePrediction(currentUser.uid, {
+          await savePrediction(currentUser.uid, {
             type: 'crop',
             input: {
-              nitrogen: parseFloat(formData.nitrogen),
-              phosphorus: parseFloat(formData.phosphorus),
-              potassium: parseFloat(formData.potassium),
+              nitrogen:    parseFloat(formData.nitrogen),
+              phosphorus:  parseFloat(formData.phosphorus),
+              potassium:   parseFloat(formData.kalium),
               temperature: parseFloat(formData.temperature),
-              humidity: parseFloat(formData.humidity),
-              ph: parseFloat(formData.ph),
-              rainfall: parseFloat(formData.rainfall)
+              humidity:    parseFloat(formData.humidity),
+              ph:          parseFloat(formData.ph),
+              rainfall:    parseFloat(formData.rainfall)
             },
             result: {
-              crop: result.prediction,
-              confidence: result.confidence,
+              crop:            result.prediction,
+              confidence:      result.confidence,
               top_predictions: result.top_predictions
             },
             confidence: result.confidence
           });
-          
-          if (saveResult.success) {
-            toast.success('Prediction saved to history!');
-          }
           setSaving(false);
         }
       } else {
         setError(result.message);
-        toast.error(result.message || t('Prediction failed'));
+        toast.error(result.message || 'Prediction failed');
       }
-    } catch (error) {
-      console.error('Prediction error:', error);
+    } catch (err) {
       toast.error('Failed to connect to ML service');
-      setError('Connection error. Please make sure ML service is running');
+      setError('Connection error. Please make sure ML service is running.');
     } finally {
       setLoading(false);
     }
   };
 
   const getCropDetails = (crop) => {
-    const cropDetails = {
-      'rice': {
-        fertilizer: 'Urea 40kg/acre + DAP 30kg/acre',
-        tips: [
-          '🌱 Plant in June-July for Kharif season',
-          '💧 Maintain 2-5cm water level throughout',
-          '🧪 Apply fertilizer in split doses',
-          '🐛 Monitor for stem borer and BPH',
-          '🌾 Harvest when 80% grains are golden'
-        ]
-      },
-      'wheat': {
-        fertilizer: 'DAP 50kg/acre + Urea 30kg/acre',
-        tips: [
-          '🌱 Sow in November-December for best yield',
-          '💧 Irrigate every 10-12 days',
-          '🧪 Apply DAP at sowing, Urea after first irrigation',
-          '🐛 Watch for aphids and rust disease',
-          '🌾 Harvest when grains are hard and golden'
-        ]
-      },
-      'maize': {
-        fertilizer: 'DAP 50kg/acre + Urea 60kg/acre',
-        tips: [
-          '🌱 Sow in June-July (Kharif) or Oct-Nov (Rabi)',
-          '💧 Irrigate every 8-10 days',
-          '🧪 Apply zinc sulfate for better yield',
-          '🐛 Watch for fall armyworm',
-          '🌾 Harvest when husks turn brown'
-        ]
-      },
-      'cotton': {
-        fertilizer: 'DAP 60kg/acre + Potash 40kg/acre',
-        tips: [
-          '🌱 Plant in April-May after summer rains',
-          '💧 Drip irrigation recommended',
-          '🧪 Apply fertilizer in furrows',
-          '🐛 Install pheromone traps for bollworm',
-          '🌾 Harvest when bolls crack open'
-        ]
-      }
+    const details = {
+      rice:        { fertilizer: 'Urea 40kg/acre + DAP 30kg/acre', season: 'Kharif (June–July)', water: 'High — keep fields flooded', tips: ['Plant in June–July', 'Maintain 2–5cm water level', 'Harvest when 80% grains are golden'] },
+      wheat:       { fertilizer: 'DAP 50kg/acre + Urea 30kg/acre', season: 'Rabi (Nov–Dec)',     water: 'Medium — irrigate every 10–12 days', tips: ['Sow in November–December', 'Apply DAP at sowing', 'Harvest when grains are golden'] },
+      maize:       { fertilizer: 'DAP 50kg/acre + Urea 60kg/acre', season: 'Kharif (June–July)', water: 'Medium — irrigate every 8–10 days', tips: ['Sow in June–July', 'Apply zinc sulfate for better yield', 'Harvest when husks turn brown'] },
+      cotton:      { fertilizer: 'DAP 60kg/acre + Potash 40kg/acre', season: 'Kharif (April–May)', water: 'Medium — drip irrigation best', tips: ['Plant in April–May', 'Install pheromone traps for bollworm', 'Harvest when bolls crack open'] },
+      mango:       { fertilizer: 'NPK 10:10:10 at 1kg/tree', season: 'Annual', water: 'Low–Medium', tips: ['Prune after harvest', 'Avoid waterlogging', 'Apply fertilizer in March–April'] },
+      banana:      { fertilizer: 'Urea 200g + Potash 300g per plant', season: 'Annual', water: 'High — irrigate every 3–4 days', tips: ['Plant in February–April', 'Remove side suckers', 'Harvest 12–15 months after planting'] },
     };
-    
-    const cropLower = crop.toLowerCase();
-    return cropDetails[cropLower] || {
+    return details[crop?.toLowerCase()] || {
       fertilizer: 'Apply balanced NPK fertilizer based on soil test',
-      tips: [
-        '🌱 Test soil before planting',
-        '💧 Irrigate as per crop requirement',
-        '🧪 Use organic manure for soil health',
-        '🐛 Monitor pest population regularly',
-        '🌾 Harvest at correct maturity stage'
-      ]
+      season:     'Consult local agriculture officer',
+      water:      'As per crop requirement',
+      tips:       ['Test soil before planting', 'Use organic manure for soil health', 'Monitor pest population regularly']
     };
   };
 
-  const inputFields = [
-    { label: t('Nitrogen (N)'), name: 'nitrogen', unit: 'kg/ha', min: 0, max: 140, placeholder: 'Enter nitrogen content' },
-    { label: t('Phosphorus (P)'), name: 'phosphorus', unit: 'kg/ha', min: 0, max: 140, placeholder: 'Enter phosphorus content' },
-    { label: t('Potassium (K)'), name: 'potassium', unit: 'kg/ha', min: 0, max: 140, placeholder: 'Enter potassium content' },
-    { label: t('Temperature'), name: 'temperature', unit: '°C', min: 0, max: 50, placeholder: 'Enter temperature' },
-    { label: t('Humidity'), name: 'humidity', unit: '%', min: 0, max: 100, placeholder: 'Enter humidity' },
-    { label: t('pH Level'), name: 'ph', unit: '', min: 0, max: 14, step: 0.1, placeholder: 'Enter soil pH (6-7.5 ideal)' },
-    { label: t('Rainfall'), name: 'rainfall', unit: 'mm', min: 0, max: 300, placeholder: 'Enter annual rainfall' },
-  ];
-
   const cropDetails = prediction ? getCropDetails(prediction.crop) : null;
+
+  // Farmer-friendly label map
+  const friendlyLabels = {
+    nitrogen:    { label: '🌿 Soil Fertility (Nitrogen)',  hint: 'Auto-detected (50 mg/kg default) — adjust if you have soil test' },
+    phosphorus:  { label: '🔴 Phosphorus Level',           hint: 'Auto-detected (40 mg/kg default) — adjust if you have soil test' },
+    potassium:   { label: '🟡 Potassium Level',            hint: 'Auto-detected (43 mg/kg default) — adjust if you have soil test' },
+    temperature: { label: '🌡️ Temperature (°C)',           hint: 'Current temperature at your location' },
+    humidity:    { label: '💧 Air Moisture (%)',           hint: 'Current humidity at your location' },
+    ph:          { label: '⚗️ Soil Acidity (pH)',          hint: 'Ideal range: 6.0 – 7.5 (default 6.5)' },
+    rainfall:    { label: '🌧️ Rainfall (mm)',              hint: 'Annual rainfall estimate (default 800mm) — adjust as needed' },
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-          {t('Crop Recommendation')}
+          🌱 {t('Crop Recommendation')}
         </h1>
       </div>
 
@@ -180,120 +167,145 @@ const CropRecommendation = () => {
         {/* Input Form */}
         <Card>
           <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
-            {t('Enter Soil & Climate Details')}
+            📍 Enter Your Location
           </h2>
+
+          {/* City auto-fetch */}
+          <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-700">
+            <p className="text-sm text-green-800 dark:text-green-300 font-medium mb-3">
+              🤖 Let AI detect your weather automatically
+            </p>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={cityInput}
+                onChange={e => setCityInput(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleFetchWeather()}
+                placeholder="Enter your city (e.g. Pune, Mumbai)"
+                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-dark-bg dark:text-white text-sm"
+              />
+              <Button
+                onClick={handleFetchWeather}
+                variant="primary"
+                disabled={fetchingWeather}
+                className="whitespace-nowrap"
+              >
+                {fetchingWeather ? '⏳ Fetching...' : '🌍 Auto Detect'}
+              </Button>
+            </div>
+            {weatherFetched && (
+              <p className="text-xs text-green-600 dark:text-green-400 mt-2">
+                ✅ Weather auto-filled. Soil values are regional averages — adjust if you have soil test results.
+              </p>
+            )}
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-4">
-            {inputFields.map((field) => (
-              <div key={field.name}>
-                <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">
-                  {field.label} {field.unit && `(${field.unit})`}
+            {Object.keys(formData).map((key) => (
+              <div key={key}>
+                <label className="block text-gray-700 dark:text-gray-200 font-medium mb-1">
+                  {friendlyLabels[key].label}
                 </label>
                 <input
                   type="number"
-                  name={field.name}
-                  value={formData[field.name]}
+                  name={key}
+                  value={formData[key]}
                   onChange={handleChange}
-                  min={field.min}
-                  max={field.max}
-                  step={field.step || 1}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-dark-bg dark:text-white"
-                  placeholder={t(field.placeholder || `Enter ${field.label.toLowerCase()}`)}
+                  step={key === 'ph' ? 0.1 : 1}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-dark-bg dark:text-white"
+                  placeholder={weatherFetched ? 'Auto-detected' : 'Enter value'}
                   required
                   disabled={loading}
                 />
-                {field.name === 'ph' && (
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    Ideal pH range: 6.0 - 7.5
-                  </p>
-                )}
+                <p className="text-xs text-gray-400 mt-1">{friendlyLabels[key].hint}</p>
               </div>
             ))}
 
-            <Button
-              type="submit"
-              variant="primary"
-              className="w-full"
-              disabled={loading || saving}
-            >
-              {loading ? t('Predicting...') : t('Predict Best Crop')}
+            <Button type="submit" variant="primary" className="w-full" disabled={loading || saving}>
+              {loading ? '⏳ Predicting...' : '🌾 Find Best Crop'}
             </Button>
           </form>
         </Card>
 
-        {/* Result Section */}
+        {/* Result */}
         <Card>
           <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
-            {t('Recommendation Result')}
+            🎯 Recommendation Result
           </h2>
-          
+
           {loading && (
             <div className="flex flex-col items-center justify-center h-96">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-              <p className="mt-4 text-gray-600 dark:text-gray-300">{t('Analyzing your soil data...')}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">This may take a few seconds</p>
+              <p className="mt-4 text-gray-600 dark:text-gray-300">Analyzing your soil & weather data...</p>
             </div>
           )}
 
           {error && !loading && (
-            <div className="text-center text-red-500 dark:text-red-400 h-96 flex flex-col items-center justify-center">
+            <div className="text-center text-red-500 h-96 flex flex-col items-center justify-center">
               <p className="text-lg">{error}</p>
-              <p className="text-sm mt-2">Please check your connection and try again</p>
+              <p className="text-sm mt-2">Check your connection and try again</p>
             </div>
           )}
 
           {!loading && !prediction && !error && (
             <div className="text-center text-gray-500 dark:text-gray-400 h-96 flex items-center justify-center">
               <div>
-                <p className="text-lg">{t('Fill the form and click predict to see results')}</p>
-                <p className="text-sm mt-2">Get AI-powered crop recommendations</p>
+                <p className="text-4xl mb-4">🌱</p>
+                <p className="text-lg">Enter your city above and click</p>
+                <p className="text-lg font-semibold text-primary">Find Best Crop</p>
               </div>
             </div>
           )}
 
           {prediction && !loading && (
-            <div className="space-y-6">
-              {/* Recommended Crop */}
-              <div className="bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 p-6 rounded-lg text-center">
-                <p className="text-gray-600 dark:text-gray-300 mb-2">{t('Recommended Crop')}</p>
-                <h3 className="text-4xl font-bold text-primary dark:text-green-400 mb-2 capitalize">
+            <div className="space-y-5">
+              {/* Top result */}
+              <div className="bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 p-6 rounded-xl text-center">
+                <p className="text-gray-500 dark:text-gray-400 mb-1">Best Crop for Your Land</p>
+                <h3 className="text-5xl font-bold text-primary dark:text-green-400 capitalize mb-3">
                   {prediction.crop}
                 </h3>
-                <div className="flex justify-center items-center space-x-4">
-                  <span className="bg-primary text-white px-4 py-1 rounded-full text-sm">
-                    {t('Confidence')}: {prediction.confidence}%
-                  </span>
-                </div>
-                {prediction.topPredictions && prediction.topPredictions.length > 1 && (
-                  <div className="mt-3 text-sm text-gray-500 dark:text-gray-400">
-                    <p>Other options: {prediction.topPredictions.slice(1).map(p => p.crop).join(', ')}</p>
-                  </div>
+                <span className="bg-primary text-white px-4 py-1 rounded-full text-sm">
+                  {prediction.confidence}% match
+                </span>
+                {prediction.topPredictions?.length > 1 && (
+                  <p className="text-sm text-gray-500 mt-3">
+                    Other options: {prediction.topPredictions.slice(1).map(p => p.crop).join(', ')}
+                  </p>
                 )}
               </div>
 
-              {/* Suggested Fertilizer */}
-              <div className="border-l-4 border-primary bg-gray-50 dark:bg-dark-card p-4 rounded-r-lg">
-                <p className="font-medium text-gray-700 dark:text-gray-200">{t('Suggested Fertilizer')}:</p>
-                <p className="text-lg text-primary dark:text-green-400 font-semibold mt-1">
-                  {cropDetails.fertilizer}
-                </p>
+              {/* Crop details in friendly cards */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">🗓️ Best Season</p>
+                  <p className="font-semibold text-gray-800 dark:text-white text-sm mt-1">{cropDetails.season}</p>
+                </div>
+                <div className="bg-cyan-50 dark:bg-cyan-900/20 p-3 rounded-lg">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">💧 Water Need</p>
+                  <p className="font-semibold text-gray-800 dark:text-white text-sm mt-1">{cropDetails.water}</p>
+                </div>
               </div>
 
-              {/* Cultivation Tips */}
+              {/* Fertilizer */}
+              <div className="border-l-4 border-primary bg-gray-50 dark:bg-dark-card p-4 rounded-r-lg">
+                <p className="text-sm text-gray-500 dark:text-gray-400">🧪 Suggested Fertilizer</p>
+                <p className="font-semibold text-primary dark:text-green-400 mt-1">{cropDetails.fertilizer}</p>
+              </div>
+
+              {/* Tips */}
               <div>
-                <h4 className="font-semibold text-gray-700 dark:text-gray-200 mb-3 flex items-center gap-2">
-                  <span className="text-xl">🌱</span> {t('Cultivation Tips')}:
-                </h4>
+                <p className="font-semibold text-gray-700 dark:text-gray-200 mb-2">💡 Quick Tips</p>
                 <ul className="space-y-2">
-                  {cropDetails.tips.map((tip, index) => (
-                    <li key={index} className="flex items-start space-x-2">
-                      <span className="text-primary font-bold">•</span>
-                      <span className="text-gray-600 dark:text-gray-300">{tip}</span>
+                  {cropDetails.tips.map((tip, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
+                      <span className="text-primary font-bold mt-0.5">•</span>
+                      {tip}
                     </li>
                   ))}
                 </ul>
               </div>
 
-              {/* Saving Indicator */}
               {saving && (
                 <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg text-center">
                   <div className="flex items-center justify-center gap-2">
@@ -303,18 +315,16 @@ const CropRecommendation = () => {
                 </div>
               )}
 
-              {/* Additional Info */}
               <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
                 <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                  <span className="font-bold">{t('Note')}:</span> {t('These recommendations are based on standard agricultural practices. Consult with local agricultural officer for region-specific advice.')}
+                  <span className="font-bold">Note:</span> These recommendations are based on your local weather and regional soil averages. For best results, update soil values with a local soil test report.
                 </p>
               </div>
 
-              {/* Share Result Button */}
               <Button
                 onClick={() => {
                   navigator.clipboard.writeText(`Recommended crop: ${prediction.crop} with ${prediction.confidence}% confidence`);
-                  toast.success('Result copied to clipboard!');
+                  toast.success('Copied to clipboard!');
                 }}
                 variant="outline"
                 className="w-full"

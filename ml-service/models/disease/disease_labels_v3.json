@@ -1,0 +1,92 @@
+{
+  "0": {
+    "raw": "Pepper__bell___Bacterial_spot",
+    "crop": "Pepper  bell",
+    "disease": "Bacterial spot",
+    "friendly": "Pepper  bell \u2014 Bacterial spot"
+  },
+  "1": {
+    "raw": "Pepper__bell___healthy",
+    "crop": "Pepper  bell",
+    "disease": "Healthy \u2705",
+    "friendly": "Pepper  bell \u2014 Healthy \u2705"
+  },
+  "2": {
+    "raw": "Potato___Early_blight",
+    "crop": "Potato",
+    "disease": "Early blight",
+    "friendly": "Potato \u2014 Early blight"
+  },
+  "3": {
+    "raw": "Potato___Late_blight",
+    "crop": "Potato",
+    "disease": "Late blight",
+    "friendly": "Potato \u2014 Late blight"
+  },
+  "4": {
+    "raw": "Potato___healthy",
+    "crop": "Potato",
+    "disease": "Healthy \u2705",
+    "friendly": "Potato \u2014 Healthy \u2705"
+  },
+  "5": {
+    "raw": "Tomato_Bacterial_spot",
+    "crop": "Tomato Bacterial spot",
+    "disease": "Unknown",
+    "friendly": "Tomato Bacterial spot \u2014 Unknown"
+  },
+  "6": {
+    "raw": "Tomato_Early_blight",
+    "crop": "Tomato Early blight",
+    "disease": "Unknown",
+    "friendly": "Tomato Early blight \u2014 Unknown"
+  },
+  "7": {
+    "raw": "Tomato_Late_blight",
+    "crop": "Tomato Late blight",
+    "disease": "Unknown",
+    "friendly": "Tomato Late blight \u2014 Unknown"
+  },
+  "8": {
+    "raw": "Tomato_Leaf_Mold",
+    "crop": "Tomato Leaf Mold",
+    "disease": "Unknown",
+    "friendly": "Tomato Leaf Mold \u2014 Unknown"
+  },
+  "9": {
+    "raw": "Tomato_Septoria_leaf_spot",
+    "crop": "Tomato Septoria leaf spot",
+    "disease": "Unknown",
+    "friendly": "Tomato Septoria leaf spot \u2014 Unknown"
+  },
+  "10": {
+    "raw": "Tomato_Spider_mites_Two_spotted_spider_mite",
+    "crop": "Tomato Spider mites Two spotted spider mite",
+    "disease": "Unknown",
+    "friendly": "Tomato Spider mites Two spotted spider mite \u2014 Unknown"
+  },
+  "11": {
+    "raw": "Tomato__Target_Spot",
+    "crop": "Tomato  Target Spot",
+    "disease": "Unknown",
+    "friendly": "Tomato  Target Spot \u2014 Unknown"
+  },
+  "12": {
+    "raw": "Tomato__Tomato_YellowLeaf__Curl_Virus",
+    "crop": "Tomato  Tomato YellowLeaf  Curl Virus",
+    "disease": "Unknown",
+    "friendly": "Tomato  Tomato YellowLeaf  Curl Virus \u2014 Unknown"
+  },
+  "13": {
+    "raw": "Tomato__Tomato_mosaic_virus",
+    "crop": "Tomato  Tomato mosaic virus",
+    "disease": "Unknown",
+    "friendly": "Tomato  Tomato mosaic virus \u2014 Unknown"
+  },
+  "14": {
+    "raw": "Tomato_healthy",
+    "crop": "Tomato healthy",
+    "disease": "Unknown",
+    "friendly": "Tomato healthy \u2014 Unknown"
+  }
+}

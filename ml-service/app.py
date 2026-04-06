@@ -28,48 +28,57 @@ print("=" * 60)
 
 # ========== LOAD CROP MODEL ==========
 print("\n📊 Loading Crop Recommendation Model...")
-crop_model = None
-crop_scaler = None
+crop_model         = None
+crop_scaler        = None
 crop_label_encoder = None
 
 try:
-    crop_model = joblib.load("models/crop/harvestify_crop_model.pkl")
-    crop_scaler = joblib.load("models/crop/crop_scaler.pkl")
-    crop_label_encoder = joblib.load("models/crop/crop_label_encoder.pkl")
+    crop_model         = joblib.load("models/crop/harvestify_crop_model_v3.pkl")
+    crop_scaler        = joblib.load("models/crop/crop_scaler_v3.pkl")
+    crop_label_encoder = joblib.load("models/crop/crop_label_encoder_v3.pkl")
     print(f"✅ Crop Model: Random Forest, {len(crop_label_encoder.classes_)} crops")
 except Exception as e:
     print(f"❌ Error loading Crop Model: {e}")
 
 # ========== LOAD DISEASE MODEL ==========
 print("\n🔬 Loading Disease Detection Model...")
-disease_model = None
+disease_model  = None
 disease_labels = None
 
 try:
-    disease_model = tf.keras.models.load_model("models/disease/harvestify_disease_model.h5")
-    with open("models/disease/disease_class_labels.json", 'r') as f:
+    disease_model = tf.keras.models.load_model(
+        "models/disease/harvestify_disease_model_v3.h5",
+        compile=False
+    )
+    disease_model.compile(
+        optimizer='adam',
+        loss='categorical_crossentropy',
+        metrics=['accuracy']
+    )
+    with open("models/disease/disease_labels_v3.json", 'r') as f:
         disease_labels = json.load(f)
-    print(f"✅ Disease Model: MobileNetV2, {len(disease_labels)} diseases")
+    print(f"✅ Disease Model: MobileNetV2, {len(disease_labels)} classes")
     print(f"   Input shape: {disease_model.input_shape}")
-    print(f"   Diseases: {list(disease_labels.values())}")
 except Exception as e:
     print(f"❌ Error loading Disease Model: {e}")
 
 # ========== LOAD YIELD MODEL ==========
 print("\n📈 Loading Yield Prediction Model...")
-yield_model = None
+yield_model          = None
 yield_feature_scaler = None
-yield_target_scaler = None
+yield_target_scaler  = None
 yield_feature_columns = None
 
 try:
-    yield_model = tf.keras.models.load_model("models/yield/harvestify_yield_model.h5", compile=False)
-    yield_feature_scaler = joblib.load("models/yield/yield_feature_scaler.pkl")
-    yield_target_scaler = joblib.load("models/yield/yield_target_scaler.pkl")
-    
-    with open("models/yield/yield_feature_columns.json", 'r') as f:
+    yield_model = tf.keras.models.load_model(
+        "models/yield/harvestify_yield_model_v3.keras",
+        compile=False
+    )
+    yield_model.compile(optimizer='adam', loss='mse', metrics=['mae'])
+    yield_feature_scaler  = joblib.load("models/yield/yield_feature_scaler_v3.pkl")
+    yield_target_scaler   = joblib.load("models/yield/yield_target_scaler_v3.pkl")
+    with open("models/yield/yield_feature_columns_v3.json", 'r') as f:
         yield_feature_columns = json.load(f)
-    
     print(f"✅ Yield Model: LSTM")
     print(f"   Feature columns: {yield_feature_columns}")
 except Exception as e:
@@ -78,19 +87,28 @@ except Exception as e:
 # ========== REQUEST MODELS ==========
 
 class CropRequest(BaseModel):
-    nitrogen: float
-    phosphorus: float
-    potassium: float
+    nitrogen:    float
+    phosphorus:  float
+    potassium:   float
     temperature: float
-    humidity: float
-    ph: float
-    rainfall: float
+    humidity:    float
+    ph:          float
+    rainfall:    float
 
 class YieldRequest(BaseModel):
-    year: int
-    rainfall: float
-    pesticides: float
+    year:        int
+    rainfall:    float
+    pesticides:  float
     temperature: float
+    crop:        str   = "wheat"
+    area_acres:  float = 1.0
+
+# ========== CROP YIELD FACTOR ==========
+CROP_FACTOR = {
+    'rice': 1.0, 'wheat': 0.95, 'maize': 1.1, 'sugarcane': 3.5,
+    'cotton': 0.4, 'potato': 2.2, 'tomato': 2.8, 'onion': 1.8,
+    'soybean': 0.7, 'groundnut': 0.6, 'default': 1.0
+}
 
 # ========== API ENDPOINTS ==========
 
@@ -101,22 +119,20 @@ async def root():
         "status": "running",
         "models": {
             "crop_recommendation": crop_model is not None,
-            "disease_detection": disease_model is not None,
-            "yield_prediction": yield_model is not None
+            "disease_detection":   disease_model is not None,
+            "yield_prediction":    yield_model is not None
         }
     }
 
+# ========== CROP RECOMMENDATION ==========
 @app.post("/predict/crop")
 async def predict_crop(request: CropRequest):
-    """Predict best crop using trained Random Forest model"""
     try:
         if crop_model is None:
             raise HTTPException(status_code=503, detail="Crop model not loaded")
-        
-        print(f"\n🌾 Crop Prediction:")
-        print(f"   Input: N={request.nitrogen}, P={request.phosphorus}, K={request.potassium}")
-        
-        # Prepare input data (7 features)
+
+        print(f"\n🌾 Crop Prediction: N={request.nitrogen}, P={request.phosphorus}, K={request.potassium}")
+
         input_data = np.array([[
             request.nitrogen,
             request.phosphorus,
@@ -126,298 +142,249 @@ async def predict_crop(request: CropRequest):
             request.ph,
             request.rainfall
         ]])
-        
-        # Scale the input
-        input_scaled = crop_scaler.transform(input_data)
-        
-        # Get prediction probabilities
+
+        input_scaled  = crop_scaler.transform(input_data)
         probabilities = crop_model.predict_proba(input_scaled)[0]
-        
-        # Get top 3 predictions
-        top_indices = np.argsort(probabilities)[-3:][::-1]
-        
+        top_indices   = np.argsort(probabilities)[-3:][::-1]
+
         predictions = []
         for idx in top_indices:
-            crop_name = crop_label_encoder.inverse_transform([idx])[0]
+            crop_name  = crop_label_encoder.inverse_transform([idx])[0]
             confidence = probabilities[idx] * 100
             predictions.append({
-                "crop": crop_name,
+                "crop":       crop_name,
                 "confidence": round(confidence, 2)
             })
-        
+
         best = predictions[0]
         print(f"   ✅ Prediction: {best['crop']} ({best['confidence']}%)")
-        
+
         return {
-            "success": True,
-            "prediction": best['crop'],
-            "confidence": best['confidence'],
+            "success":         True,
+            "prediction":      best['crop'],
+            "confidence":      best['confidence'],
             "top_predictions": predictions,
-            "mode": "real"
+            "mode":            "real"
         }
-        
+
     except Exception as e:
         print(f"❌ Crop prediction error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-# ========== DISEASE DETECTION - COMPLETE ==========
+
+# ========== DISEASE DETECTION ==========
 @app.post("/predict/disease")
 async def predict_disease(file: UploadFile = File(...)):
-    """Detect plant disease from leaf image using CNN"""
     try:
         if disease_model is None:
             raise HTTPException(status_code=503, detail="Disease model not loaded")
-        
-        # Read image
-        contents = await file.read()
-        image = Image.open(io.BytesIO(contents))
-        
-        print(f"\n🔬 Disease Detection:")
-        print(f"   Original image size: {image.size}, Mode: {image.mode}")
-        
-        # IMPORTANT: Model expects 128x128 images (from test output)
-        image = image.resize((128, 128))
-        image_array = np.array(image)
-        
-        # Convert to RGB if needed
-        if len(image_array.shape) == 2:
-            image_array = np.stack([image_array] * 3, axis=-1)
-        elif image_array.shape[2] == 4:
-            image_array = image_array[:, :, :3]
-        
-        # Normalize to [0,1]
-        image_array = image_array / 255.0
+
+        # Read and preprocess image
+        contents    = await file.read()
+        image       = Image.open(io.BytesIO(contents)).convert('RGB')
+        image       = image.resize((128, 128))
+        image_array = np.array(image, dtype=np.float32) / 255.0
         image_array = np.expand_dims(image_array, axis=0)
-        
+
+        print(f"\n🔬 Disease Detection: image shape {image_array.shape}")
+
         # Predict
-        predictions = disease_model.predict(image_array, verbose=0)[0]
-        predicted_class = np.argmax(predictions)
-        confidence = float(predictions[predicted_class] * 100)
-        
-        # Get disease name from labels
-        disease_name = disease_labels.get(str(predicted_class), f"Unknown_{predicted_class}")
-        
-        # Parse crop and disease (format: "Crop___Disease" or just "Disease")
-        if '___' in disease_name:
-            parts = disease_name.split('___')
-            crop = parts[0]
-            disease = parts[1]
+        predictions     = disease_model.predict(image_array, verbose=0)[0]
+        predicted_class = int(np.argmax(predictions))
+        confidence      = float(predictions[predicted_class] * 100)
+
+        # ✅ FIXED: Handle dict labels from disease_labels_v3.json
+        label_entry = disease_labels.get(str(predicted_class), None)
+
+        if label_entry is None:
+            crop    = "Unknown"
+            disease = f"Class_{predicted_class}"
+        elif isinstance(label_entry, dict):
+            crop    = label_entry.get('crop', 'Unknown')
+            disease = label_entry.get('disease', 'Unknown')
         else:
-            crop = "Unknown"
-            disease = disease_name
-        
-        print(f"   ✅ Detected: {crop} - {disease} ({confidence:.1f}% confidence)")
-        
-        # Determine severity based on confidence
+            # Fallback for plain string labels
+            if '___' in label_entry:
+                parts   = label_entry.split('___')
+                crop    = parts[0].replace('_', ' ').strip()
+                disease = parts[1].replace('_', ' ').strip()
+            else:
+                crop    = 'Unknown'
+                disease = label_entry.replace('_', ' ').strip()
+
+        # Clean up healthy label
+        if disease.lower() == 'healthy':
+            disease = 'Healthy ✅'
+
+        print(f"   ✅ Detected: {crop} — {disease} ({confidence:.1f}%)")
+
+        # Severity
         if confidence > 90:
             severity = "High"
         elif confidence > 70:
             severity = "Medium"
         else:
             severity = "Low"
-        
-        # Get treatment recommendations based on disease
+
         treatment_info = get_disease_treatment(disease)
-        
+
         return {
-            "success": True,
-            "crop": crop,
-            "disease": disease,
+            "success":    True,
+            "crop":       crop,
+            "disease":    disease,
             "confidence": round(confidence, 2),
-            "severity": severity,
-            "treatment": treatment_info["treatment"],
+            "severity":   severity,
+            "treatment":  treatment_info["treatment"],
             "prevention": treatment_info["prevention"],
-            "mode": "real"
+            "mode":       "real"
         }
-        
+
     except Exception as e:
         print(f"❌ Disease detection error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-# ========== YIELD PREDICTION - COMPLETE ==========
+
+# ========== YIELD PREDICTION ==========
 @app.post("/predict/yield")
 async def predict_yield(request: YieldRequest):
-    """Predict crop yield using LSTM model"""
     try:
         if yield_model is None or yield_feature_scaler is None:
             raise HTTPException(status_code=503, detail="Yield model not loaded")
-        
-        print(f"\n📈 Yield Prediction:")
-        print(f"   Year: {request.year}")
-        print(f"   Additional data: Rainfall={request.rainfall}mm, Pesticides={request.pesticides}kg/ha, Temp={request.temperature}°C")
-        print(f"   Model expects: {yield_feature_columns}")
-        
-        # Model only expects 'year' as feature
-        input_df = pd.DataFrame([{'year': request.year}])
-        input_df = input_df[yield_feature_columns]
-        
-        # Scale features
-        input_scaled = yield_feature_scaler.transform(input_df)
-        
-        # Reshape for LSTM: (batch, timesteps, features)
-        input_reshaped = input_scaled.reshape(1, 1, 1)
-        
-        # Predict
-        prediction_scaled = yield_model.predict(input_reshaped, verbose=0)[0][0]
-        
-        # Inverse transform to get actual yield
-        prediction = yield_target_scaler.inverse_transform([[prediction_scaled]])[0][0]
-        
-        print(f"   ✅ Predicted yield: {prediction:.2f} tons/hectare")
-        
-        # Generate insights based on additional inputs
+
+        print(f"\n📈 Yield Prediction: crop={request.crop}, area={request.area_acres} acres")
+        print(f"   Inputs: year={request.year}, rainfall={request.rainfall}, temp={request.temperature}")
+
+        # Build input matching feature columns
+        val_map = {
+            'Year':                          request.year,
+            'year':                          request.year,
+            'average_rain_fall_mm_per_year': request.rainfall,
+            'pesticides_tonnes':             request.pesticides,
+            'avg_temp':                      request.temperature,
+        }
+        input_data   = np.array([[val_map.get(col, 0) for col in yield_feature_columns]])
+        input_scaled = yield_feature_scaler.transform(input_data)
+        input_lstm   = input_scaled.reshape(1, 1, len(yield_feature_columns))
+
+        pred_scaled = yield_model.predict(input_lstm, verbose=0)[0][0]
+        pred_hg_ha  = float(yield_target_scaler.inverse_transform([[pred_scaled]])[0][0])
+
+        # Apply crop-specific factor
+        factor     = CROP_FACTOR.get(request.crop.lower(), CROP_FACTOR['default'])
+        pred_hg_ha = pred_hg_ha * factor
+
+        # Convert to farmer-friendly units
+        yield_kg_ha     = pred_hg_ha / 100
+        yield_kg_acre   = yield_kg_ha / 2.471
+        total_kg        = yield_kg_acre * request.area_acres
+        total_bags      = total_kg / 50
+
+        # Rating
+        if yield_kg_ha > 8000:
+            rating = "🟢 Excellent"
+            advice = "Excellent yield expected!"
+        elif yield_kg_ha > 4000:
+            rating = "🟡 Good"
+            advice = "Good yield expected."
+        elif yield_kg_ha > 1500:
+            rating = "🟠 Moderate"
+            advice = "Moderate yield. Consider soil improvement."
+        else:
+            rating = "🔴 Low"
+            advice = "Low yield. Check soil and water conditions."
+
+        # Insights
         insights = []
         if request.rainfall < 500:
-            insights.append("⚠️ Low rainfall detected - consider irrigation")
+            insights.append("⚠️ Low rainfall — consider irrigation")
         elif request.rainfall > 1200:
-            insights.append("⚠️ High rainfall - ensure proper drainage")
+            insights.append("⚠️ High rainfall — ensure proper drainage")
         if request.temperature > 35:
-            insights.append("⚠️ High temperature - protect crops from heat stress")
+            insights.append("⚠️ High temperature — protect crops from heat stress")
         elif request.temperature < 15:
-            insights.append("⚠️ Low temperature - protect crops from frost")
-        if request.pesticides > 200:
-            insights.append("⚠️ High pesticide use - consider integrated pest management")
-        
+            insights.append("⚠️ Low temperature — protect crops from frost")
+
+        print(f"   ✅ Yield: {yield_kg_acre:.0f} kg/acre | Total: {total_kg:.0f} kg | {rating}")
+
         return {
-            "success": True,
-            "yield": round(prediction, 2),
-            "unit": "tons/hectare",
-            "insights": insights,
-            "mode": "real"
+            "success":            True,
+            "crop":               request.crop,
+            "area_acres":         request.area_acres,
+            "kg_per_acre":        round(yield_kg_acre, 0),
+            "kg_per_hectare":     round(yield_kg_ha, 0),
+            "tonnes_per_hectare": round(yield_kg_ha / 1000, 2),
+            "total_kg":           round(total_kg, 0),
+            "total_bags_50kg":    round(total_bags, 0),
+            "rating":             rating,
+            "advice":             advice,
+            "insights":           insights,
+            "mode":               "real"
         }
-        
+
     except Exception as e:
         print(f"❌ Yield prediction error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-# ========== HELPER FUNCTIONS ==========
 
+# ========== HELPER: DISEASE TREATMENT ==========
 def get_disease_treatment(disease):
-    """Get treatment recommendations for common plant diseases"""
-    disease_lower = disease.lower()
-    
+    disease_lower = disease.lower() if isinstance(disease, str) else ""
+
     treatments = {
         "bacterial_spot": {
-            "treatment": [
-                "Apply copper-based bactericides",
-                "Remove infected leaves and plants",
-                "Avoid overhead irrigation",
-                "Use disease-free seeds"
-            ],
-            "prevention": [
-                "Plant resistant varieties",
-                "Practice crop rotation",
-                "Maintain proper spacing for air circulation",
-                "Sanitize tools and equipment"
-            ]
+            "treatment":  ["Apply copper-based bactericides", "Remove infected leaves", "Avoid overhead irrigation", "Use disease-free seeds"],
+            "prevention": ["Plant resistant varieties", "Practice crop rotation", "Maintain proper spacing", "Sanitize tools"]
         },
         "early_blight": {
-            "treatment": [
-                "Apply chlorothalonil or copper-based fungicides",
-                "Remove infected lower leaves",
-                "Mulch to prevent soil splash",
-                "Avoid overhead watering"
-            ],
-            "prevention": [
-                "Use disease-free seeds",
-                "Crop rotation with non-host crops",
-                "Provide adequate plant spacing",
-                "Remove plant debris after harvest"
-            ]
+            "treatment":  ["Apply chlorothalonil fungicides", "Remove infected lower leaves", "Mulch to prevent soil splash", "Avoid overhead watering"],
+            "prevention": ["Use disease-free seeds", "Crop rotation", "Adequate plant spacing", "Remove plant debris after harvest"]
         },
         "late_blight": {
-            "treatment": [
-                "Apply fungicides containing mancozeb or chlorothalonil",
-                "Remove and destroy infected plants",
-                "Improve air circulation",
-                "Avoid overhead irrigation"
-            ],
-            "prevention": [
-                "Plant resistant varieties",
-                "Use certified disease-free seed potatoes",
-                "Monitor fields regularly",
-                "Apply preventive fungicides in wet conditions"
-            ]
+            "treatment":  ["Apply mancozeb or chlorothalonil fungicides", "Remove and destroy infected plants", "Improve air circulation", "Avoid overhead irrigation"],
+            "prevention": ["Plant resistant varieties", "Use certified disease-free seeds", "Monitor fields regularly", "Apply preventive fungicides in wet conditions"]
         },
         "leaf_mold": {
-            "treatment": [
-                "Improve air circulation",
-                "Reduce humidity in greenhouse",
-                "Remove infected leaves",
-                "Apply fungicides containing chlorothalonil"
-            ],
-            "prevention": [
-                "Use resistant varieties",
-                "Maintain proper spacing",
-                "Water at base of plants",
-                "Keep greenhouse well-ventilated"
-            ]
+            "treatment":  ["Improve air circulation", "Reduce humidity", "Remove infected leaves", "Apply chlorothalonil fungicides"],
+            "prevention": ["Use resistant varieties", "Maintain proper spacing", "Water at base of plants", "Keep area well-ventilated"]
         },
-        "septoria_leaf_spot": {
-            "treatment": [
-                "Apply fungicides containing chlorothalonil or copper",
-                "Remove infected leaves",
-                "Mulch to prevent soil splash",
-                "Avoid overhead watering"
-            ],
-            "prevention": [
-                "Practice crop rotation",
-                "Use disease-free seeds",
-                "Provide adequate spacing",
-                "Remove plant debris"
-            ]
+        "septoria": {
+            "treatment":  ["Apply copper or chlorothalonil fungicides", "Remove infected leaves", "Mulch to prevent soil splash", "Avoid overhead watering"],
+            "prevention": ["Practice crop rotation", "Use disease-free seeds", "Adequate spacing", "Remove plant debris"]
         },
         "healthy": {
-            "treatment": [
-                "Continue good farming practices",
-                "Monitor regularly for early signs of disease"
-            ],
-            "prevention": [
-                "Maintain field hygiene",
-                "Use balanced fertilizers",
-                "Proper irrigation management",
-                "Regular crop monitoring"
-            ]
+            "treatment":  ["Continue good farming practices", "Monitor regularly for early signs"],
+            "prevention": ["Maintain field hygiene", "Use balanced fertilizers", "Proper irrigation", "Regular crop monitoring"]
         }
     }
-    
-    # Find matching treatment
+
     for key in treatments:
         if key in disease_lower:
             return treatments[key]
-    
-    # Default treatment
+
     return {
-        "treatment": [
-            "Consult local agriculture officer",
-            "Remove and destroy infected plant parts",
-            "Apply recommended fungicides",
-            "Improve field sanitation"
-        ],
-        "prevention": [
-            "Use disease-resistant varieties",
-            "Practice crop rotation",
-            "Maintain proper field hygiene",
-            "Regular crop monitoring"
-        ]
+        "treatment":  ["Consult local agriculture officer", "Remove and destroy infected parts", "Apply recommended fungicides", "Improve field sanitation"],
+        "prevention": ["Use disease-resistant varieties", "Practice crop rotation", "Maintain proper field hygiene", "Regular crop monitoring"]
     }
 
+
+# ========== HEALTH CHECK ==========
 @app.get("/health")
 async def health_check():
     return {
-        "status": "healthy",
+        "status":  "healthy",
         "service": "Harvestify ML API",
         "models": {
-            "crop": crop_model is not None,
+            "crop":    crop_model is not None,
             "disease": disease_model is not None,
-            "yield": yield_model is not None
+            "yield":   yield_model is not None
         }
     }
 
+
 if __name__ == "__main__":
     print("\n" + "=" * 60)
-    print("🚀 Starting Harvestify ML Service (REAL MODELS)")
-    print("📍 Server: http://localhost:8000")
+    print("🚀 Starting Harvestify ML Service")
+    print("📍 Server  : http://localhost:8000")
     print("📍 API Docs: http://localhost:8000/docs")
     print("=" * 60 + "\n")
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -1,0 +1,140 @@
+{
+  "rice": {
+    "emoji": "\ud83c\udf3e",
+    "water": "High",
+    "season": "Kharif",
+    "tip": "Needs flooded fields"
+  },
+  "wheat": {
+    "emoji": "\ud83c\udf3f",
+    "water": "Medium",
+    "season": "Rabi",
+    "tip": "Good for cool weather"
+  },
+  "maize": {
+    "emoji": "\ud83c\udf3d",
+    "water": "Medium",
+    "season": "Kharif",
+    "tip": "Grows in 3 months"
+  },
+  "chickpea": {
+    "emoji": "\ud83e\uded8",
+    "water": "Low",
+    "season": "Rabi",
+    "tip": "Drought tolerant"
+  },
+  "kidneybeans": {
+    "emoji": "\ud83e\uded8",
+    "water": "Medium",
+    "season": "Kharif",
+    "tip": "Good market price"
+  },
+  "pigeonpeas": {
+    "emoji": "\ud83c\udf31",
+    "water": "Low",
+    "season": "Kharif",
+    "tip": "Fixes nitrogen in soil"
+  },
+  "mothbeans": {
+    "emoji": "\ud83c\udf31",
+    "water": "Low",
+    "season": "Kharif",
+    "tip": "Very drought resistant"
+  },
+  "mungbean": {
+    "emoji": "\ud83e\uded8",
+    "water": "Low",
+    "season": "Zaid",
+    "tip": "Short duration crop"
+  },
+  "blackgram": {
+    "emoji": "\ud83e\uded8",
+    "water": "Medium",
+    "season": "Kharif",
+    "tip": "Good for pulse rotation"
+  },
+  "lentil": {
+    "emoji": "\ud83e\uded8",
+    "water": "Low",
+    "season": "Rabi",
+    "tip": "High protein content"
+  },
+  "pomegranate": {
+    "emoji": "\ud83c\udf4e",
+    "water": "Low",
+    "season": "Annual",
+    "tip": "High value fruit crop"
+  },
+  "banana": {
+    "emoji": "\ud83c\udf4c",
+    "water": "High",
+    "season": "Annual",
+    "tip": "Year-round income"
+  },
+  "mango": {
+    "emoji": "\ud83e\udd6d",
+    "water": "Medium",
+    "season": "Annual",
+    "tip": "High export demand"
+  },
+  "grapes": {
+    "emoji": "\ud83c\udf47",
+    "water": "Medium",
+    "season": "Annual",
+    "tip": "Good for wine regions"
+  },
+  "watermelon": {
+    "emoji": "\ud83c\udf49",
+    "water": "High",
+    "season": "Zaid",
+    "tip": "Fast growing summer crop"
+  },
+  "muskmelon": {
+    "emoji": "\ud83c\udf48",
+    "water": "Medium",
+    "season": "Zaid",
+    "tip": "Good water content"
+  },
+  "apple": {
+    "emoji": "\ud83c\udf4e",
+    "water": "Medium",
+    "season": "Annual",
+    "tip": "Needs cold winters"
+  },
+  "orange": {
+    "emoji": "\ud83c\udf4a",
+    "water": "Medium",
+    "season": "Annual",
+    "tip": "Subtropical climate"
+  },
+  "papaya": {
+    "emoji": "\ud83c\udf48",
+    "water": "Medium",
+    "season": "Annual",
+    "tip": "Grows in 9 months"
+  },
+  "coconut": {
+    "emoji": "\ud83e\udd65",
+    "water": "High",
+    "season": "Annual",
+    "tip": "Coastal areas best"
+  },
+  "cotton": {
+    "emoji": "\u2601\ufe0f",
+    "water": "Medium",
+    "season": "Kharif",
+    "tip": "High commercial value"
+  },
+  "jute": {
+    "emoji": "\ud83c\udf3f",
+    "water": "High",
+    "season": "Kharif",
+    "tip": "Needs humid climate"
+  },
+  "coffee": {
+    "emoji": "\u2615",
+    "water": "Medium",
+    "season": "Annual",
+    "tip": "Hilly terrain ideal"
+  }
+}
