@@ -1,5 +1,4 @@
-# 🌾 Harvestify
-
+# 🌾 Harvestify  
 ### *Your Intelligent Digital Farm Assistant*
 
 <p align="center">
@@ -13,11 +12,17 @@
 
 ---
 
+## 🌐 Live Demo
+
+🔗 https://harvestify-xyz.vercel.app/
+
+---
+
 ## 🚀 Overview
 
-**Harvestify** is a full-stack AgriTech platform that empowers farmers with **real-time insights, AI-driven recommendations, and intelligent automation** to make better farming decisions.
+**Harvestify** is a full-stack AgriTech platform that empowers farmers with **real-time insights, AI-driven recommendations, and intelligent automation** to make smarter farming decisions.
 
-By combining **weather intelligence, live market data, machine learning models, and user-friendly design**, Harvestify acts as a **digital farm assistant** — transforming complex agricultural data into **simple, actionable insights**.
+By combining **weather intelligence, live market data, and machine learning models**, Harvestify transforms raw agricultural data into **clear, actionable insights** — acting as a true **digital farm assistant**.
 
 ---
 
