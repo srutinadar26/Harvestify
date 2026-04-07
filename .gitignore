@@ -16,5 +16,5 @@ dist/
 .vscode/
 
 # Models (optional - adjust if you want to commit them)
-*.pkl
-*.h5
+# *.pkl
+# *.h5

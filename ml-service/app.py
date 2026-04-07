@@ -9,8 +9,9 @@ import tensorflow as tf
 from PIL import Image
 import io
 import json
-import uvicorn
 import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 app = FastAPI(title="Harvestify ML API", version="1.0.0")
 
@@ -33,9 +34,9 @@ crop_scaler        = None
 crop_label_encoder = None
 
 try:
-    crop_model         = joblib.load("models/crop/harvestify_crop_model_v3.pkl")
-    crop_scaler        = joblib.load("models/crop/crop_scaler_v3.pkl")
-    crop_label_encoder = joblib.load("models/crop/crop_label_encoder_v3.pkl")
+    crop_model         = joblib.load(os.path.join(BASE_DIR, "models", "crop", "harvestify_crop_model_v3.pkl"))
+    crop_scaler        = joblib.load(os.path.join(BASE_DIR, "models", "crop", "crop_scaler_v3.pkl"))
+    crop_label_encoder = joblib.load(os.path.join(BASE_DIR, "models", "crop", "crop_label_encoder_v3.pkl"))
     print(f"✅ Crop Model: Random Forest, {len(crop_label_encoder.classes_)} crops")
 except Exception as e:
     print(f"❌ Error loading Crop Model: {e}")
@@ -47,7 +48,7 @@ disease_labels = None
 
 try:
     disease_model = tf.keras.models.load_model(
-        "models/disease/harvestify_disease_model_v3.h5",
+        os.path.join(BASE_DIR, "models", "disease", "harvestify_disease_model_v3.h5"),
         compile=False
     )
     disease_model.compile(
@@ -55,7 +56,7 @@ try:
         loss='categorical_crossentropy',
         metrics=['accuracy']
     )
-    with open("models/disease/disease_labels_v3.json", 'r') as f:
+    with open(os.path.join(BASE_DIR, "models", "disease", "disease_labels_v3.json"), 'r') as f:
         disease_labels = json.load(f)
     print(f"✅ Disease Model: MobileNetV2, {len(disease_labels)} classes")
     print(f"   Input shape: {disease_model.input_shape}")
@@ -71,13 +72,13 @@ yield_feature_columns = None
 
 try:
     yield_model = tf.keras.models.load_model(
-        "models/yield/harvestify_yield_model_v3.keras",
+        os.path.join(BASE_DIR, "models", "yield", "harvestify_yield_model_v3.keras"),
         compile=False
     )
     yield_model.compile(optimizer='adam', loss='mse', metrics=['mae'])
-    yield_feature_scaler  = joblib.load("models/yield/yield_feature_scaler_v3.pkl")
-    yield_target_scaler   = joblib.load("models/yield/yield_target_scaler_v3.pkl")
-    with open("models/yield/yield_feature_columns_v3.json", 'r') as f:
+    yield_feature_scaler  = joblib.load(os.path.join(BASE_DIR, "models", "yield", "yield_feature_scaler_v3.pkl"))
+    yield_target_scaler   = joblib.load(os.path.join(BASE_DIR, "models", "yield", "yield_target_scaler_v3.pkl"))
+    with open(os.path.join(BASE_DIR, "models", "yield", "yield_feature_columns_v3.json"), 'r') as f:
         yield_feature_columns = json.load(f)
     print(f"✅ Yield Model: LSTM")
     print(f"   Feature columns: {yield_feature_columns}")
