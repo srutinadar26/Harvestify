@@ -50,43 +50,43 @@ const Profile = () => {
 
   if (!currentUser) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <div className="flex justify-center items-center h-48 sm:h-64">
+        <div className="animate-spin rounded-full h-10 sm:h-12 w-10 sm:w-12 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+    <div className="space-y-4 sm:space-y-6">
+      <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">
         {t('My Profile')}
       </h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Profile Card */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+        {/* Profile Card - Responsive Sizing */}
         <Card className="lg:col-span-1">
           <div className="text-center">
-            <div className="w-32 h-32 bg-gradient-to-br from-primary to-green-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+            <div className="w-24 sm:w-32 h-24 sm:h-32 bg-gradient-to-br from-primary to-green-600 rounded-full mx-auto mb-3 sm:mb-4 flex items-center justify-center flex-shrink-0">
               {currentUser.photoURL ? (
                 <img src={currentUser.photoURL} alt={currentUser.displayName} className="w-full h-full rounded-full object-cover" />
               ) : (
-                <FaUser className="text-white text-5xl" />
+                <FaUser className="text-white text-3xl sm:text-5xl" />
               )}
             </div>
-            <h2 className="text-2xl font-bold mb-2 dark:text-white">
+            <h2 className="text-lg sm:text-2xl font-bold mb-1 sm:mb-2 dark:text-white break-words">
               {currentUser.displayName || 'Farmer'}
             </h2>
-            <p className="text-gray-600 dark:text-gray-300 mb-4 flex items-center justify-center gap-1">
-              <FaCalendarAlt className="text-sm" />
-              {t('Member since')} {formatDate(currentUser.metadata?.creationTime)}
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-3 sm:mb-4 flex items-center justify-center gap-1">
+              <FaCalendarAlt className="text-xs sm:text-sm flex-shrink-0" />
+              <span>{t('Member since')} {formatDate(currentUser.metadata?.creationTime)}</span>
             </p>
             
-            <div className="space-y-3 text-left">
-              <div className="flex items-center space-x-2">
-                <FaEnvelope className="text-gray-400" />
-                <span className="dark:text-gray-200">{currentUser.email}</span>
+            <div className="space-y-2 text-left text-xs sm:text-sm">
+              <div className="flex items-center space-x-2 break-all">
+                <FaEnvelope className="text-gray-400 flex-shrink-0" />
+                <span className="dark:text-gray-200 break-all">{currentUser.email}</span>
                 {currentUser.emailVerified ? (
-                  <FaCheck className="text-green-500 text-xs" />
+                  <FaCheck className="text-green-500 text-xs flex-shrink-0" />
                 ) : (
                   <span className="text-xs text-yellow-500"></span>
                 )}
@@ -94,7 +94,7 @@ const Profile = () => {
               
               {currentUser.phoneNumber && (
                 <div className="flex items-center space-x-2">
-                  <FaPhone className="text-gray-400" />
+                  <FaPhone className="text-gray-400 flex-shrink-0" />
                   <span className="dark:text-gray-200">{currentUser.phoneNumber}</span>
                 </div>
               )}
@@ -102,22 +102,22 @@ const Profile = () => {
 
             <button
               onClick={() => setIsEditing(!isEditing)}
-              className="btn-primary w-full mt-6 flex items-center justify-center gap-2"
+              className="btn-primary w-full mt-4 sm:mt-6 flex items-center justify-center gap-2 text-xs sm:text-base py-2 sm:py-2.5 touch-manipulation"
             >
-              <FaEdit />
+              <FaEdit size={14} className="sm:text-base" />
               {isEditing ? t('Cancel') : t('Edit Profile')}
             </button>
           </div>
         </Card>
 
         {/* Edit Form or Stats */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-4 sm:space-y-6">
           {isEditing ? (
             <Card>
-              <h3 className="text-xl font-semibold mb-4 dark:text-white">{t('Edit Profile')}</h3>
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 dark:text-white">{t('Edit Profile')}</h3>
+              <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
                 <div>
-                  <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">
+                  <label className="block text-xs sm:text-sm text-gray-700 dark:text-gray-200 font-medium mb-1.5 sm:mb-2">
                     {t('Display Name')}
                   </label>
                   <input
@@ -125,12 +125,12 @@ const Profile = () => {
                     name="displayName"
                     value={formData.displayName}
                     onChange={handleInputChange}
-                    className="input-field w-full dark:bg-dark-bg dark:text-white"
+                    className="input-field w-full text-xs sm:text-base h-10 sm:h-11 dark:bg-dark-bg dark:text-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">
+                  <label className="block text-xs sm:text-sm text-gray-700 dark:text-gray-200 font-medium mb-1.5 sm:mb-2">
                     {t('Phone Number')}
                   </label>
                   <input
@@ -138,15 +138,15 @@ const Profile = () => {
                     name="phoneNumber"
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
-                    className="input-field w-full dark:bg-dark-bg dark:text-white"
+                    className="input-field w-full text-xs sm:text-base h-10 sm:h-11 dark:bg-dark-bg dark:text-white"
                     placeholder="+91XXXXXXXXXX"
                   />
                 </div>
 
-                <div className="flex gap-3">
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                   <button
                     type="submit"
-                    className="flex-1 btn-primary py-2 flex items-center justify-center gap-2"
+                    className="flex-1 btn-primary py-2 sm:py-2.5 text-xs sm:text-base flex items-center justify-center gap-2 touch-manipulation active:scale-95"
                   >
                     <FaSave />
                     {t('Save Changes')}

@@ -170,76 +170,76 @@ const MarketPrices = () => {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div className="space-y-4 sm:space-y-6">
+      {/* Header - Mobile Responsive */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">
             {t('Market Prices')}
           </h1>
-          <p className="text-gray-600 dark:text-gray-300 mt-1">
+          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1">
             {t('Real-time mandi prices across India')}
           </p>
         </div>
         
         <button
           onClick={handleRefresh}
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-green-700 transition disabled:opacity-50"
+          className="flex items-center gap-2 px-3 sm:px-4 py-2 text-xs sm:text-sm bg-primary text-white rounded-lg hover:bg-green-700 transition disabled:opacity-50 touch-manipulation active:scale-95 flex-shrink-0"
           disabled={loading}
         >
-          <FaSync className={loading ? 'animate-spin' : ''} />
+          <FaSync size={14} className={`${loading ? 'animate-spin' : ''} sm:text-base`} />
           {t('Refresh')}
         </button>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* Stats Cards - Responsive Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20">
-          <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">{t('Total Markets')}</p>
-          <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.totalMarkets}</p>
+          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-1">{t('Total Markets')}</p>
+          <p className="text-xl sm:text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.totalMarkets}</p>
         </Card>
         
         <Card className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20">
-          <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">{t('Average Price')}</p>
-          <p className="text-2xl font-bold text-green-600 dark:text-green-400">{formatPrice(stats.avgPrice)}</p>
+          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-1">{t('Average Price')}</p>
+          <p className="text-xl sm:text-2xl font-bold text-green-600 dark:text-green-400">{formatPrice(stats.avgPrice)}</p>
         </Card>
         
         <Card className="bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-800/20">
-          <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">{t('Highest Price')}</p>
-          <p className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{formatPrice(stats.highestPrice)}</p>
+          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-1">{t('Highest Price')}</p>
+          <p className="text-xl sm:text-2xl font-bold text-yellow-600 dark:text-yellow-400">{formatPrice(stats.highestPrice)}</p>
         </Card>
         
         <Card className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20">
-          <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">{t('Lowest Price')}</p>
-          <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">{formatPrice(stats.lowestPrice)}</p>
+          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-1">{t('Lowest Price')}</p>
+          <p className="text-xl sm:text-2xl font-bold text-purple-600 dark:text-purple-400">{formatPrice(stats.lowestPrice)}</p>
         </Card>
       </div>
 
-      {/* Filters */}
+      {/* Filters - Mobile Collapsible */}
       <Card>
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold flex items-center gap-2">
+        <div className="flex items-center justify-between mb-3 sm:mb-4">
+          <h3 className="text-base sm:text-lg font-semibold flex items-center gap-2">
             <FaFilter className="text-primary" />
             {t('Filters')}
           </h3>
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="text-primary hover:text-green-700 md:hidden"
+            className="text-primary hover:text-green-700 lg:hidden text-xs sm:text-sm touch-manipulation"
           >
             {showFilters ? t('Hide') : t('Show')}
           </button>
         </div>
 
-        <div className={`grid grid-cols-1 md:grid-cols-4 gap-4 ${!showFilters && 'hidden md:grid'}`}>
+        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 ${!showFilters && 'hidden lg:grid'}`}>
           {/* Search */}
           <div className="relative">
-            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <FaSearch className="absolute left-2.5 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs sm:text-sm" />
             <input
               type="text"
               placeholder={t('Search market or crop...')}
               value={searchTerm}
               onChange={handleSearch}
-              className="input-field pl-10 w-full dark:bg-dark-bg dark:text-white"
+              className="input-field pl-8 sm:pl-10 text-xs sm:text-base h-10 sm:h-11 w-full dark:bg-dark-bg dark:text-white"
             />
           </div>
 
@@ -247,7 +247,7 @@ const MarketPrices = () => {
           <select
             value={selectedState}
             onChange={handleStateChange}
-            className="input-field dark:bg-dark-bg dark:text-white"
+            className="input-field text-xs sm:text-base h-10 sm:h-11 dark:bg-dark-bg dark:text-white"
           >
             {marketService.getStates().map(state => (
               <option key={state} value={state}>{state}</option>

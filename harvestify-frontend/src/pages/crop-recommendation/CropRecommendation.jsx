@@ -156,39 +156,39 @@ const CropRecommendation = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">
           🌱 {t('Crop Recommendation')}
         </h1>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:gap-6 lg:grid-cols-2 gap-4">
         {/* Input Form */}
         <Card>
-          <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
+          <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-800 dark:text-white">
             📍 Enter Your Location
           </h2>
 
-          {/* City auto-fetch */}
-          <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-700">
-            <p className="text-sm text-green-800 dark:text-green-300 font-medium mb-3">
+          {/* City auto-fetch - Mobile Optimized */}
+          <div className="mb-5 sm:mb-6 p-3 sm:p-4 bg-green-50 dark:bg-green-900/20 rounded-lg sm:rounded-xl border border-green-200 dark:border-green-700">
+            <p className="text-xs sm:text-sm text-green-800 dark:text-green-300 font-medium mb-2 sm:mb-3">
               🤖 Let AI detect your weather automatically
             </p>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <input
                 type="text"
                 value={cityInput}
                 onChange={e => setCityInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && handleFetchWeather()}
                 placeholder="Enter your city (e.g. Pune, Mumbai)"
-                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-dark-bg dark:text-white text-sm"
+                className="flex-1 px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-dark-bg dark:text-white"
               />
               <Button
                 onClick={handleFetchWeather}
                 variant="primary"
                 disabled={fetchingWeather}
-                className="whitespace-nowrap"
+                className="whitespace-nowrap text-xs sm:text-sm py-2 sm:py-2.5"
               >
                 {fetchingWeather ? '⏳ Fetching...' : '🌍 Auto Detect'}
               </Button>

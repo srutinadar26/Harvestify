@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+const API_URL =
+  process.env.REACT_APP_ML_API_URL ||
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:8000'
+    : window.location.origin);
+
 const TestAPI = () => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -10,7 +16,7 @@ const TestAPI = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post('http://localhost:8000/predict/crop', {
+      const response = await axios.post(`${API_URL}/predict/crop`, {
         nitrogen: 90,
         phosphorus: 42,
         potassium: 43,
@@ -31,7 +37,7 @@ const TestAPI = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post('http://localhost:8000/predict/yield', {
+      const response = await axios.post(`${API_URL}/predict/yield`, {
         year: 2023,
         rainfall: 850,
         pesticides: 120,

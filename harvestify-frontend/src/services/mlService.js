@@ -1,13 +1,19 @@
 // src/services/mlService.js
 import axios from 'axios';
 
-const ML_API_URL = process.env.REACT_APP_ML_API_URL || 'http://localhost:8000';
+const defaultMlApiUrl =
+  process.env.REACT_APP_ML_API_URL ||
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:8000'
+    : window.location.origin);
+
+const ML_API_URL = defaultMlApiUrl;
 
 const mlService = {
   // Check if ML service is running
   healthCheck: async () => {
     try {
-      const response = await axios.get(`${ML_API_URL}/`);
+      const response = await axios.get(`${ML_API_URL}/health`);
       return response.data;
     } catch (error) {
       console.error('ML service not reachable:', error);

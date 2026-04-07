@@ -119,23 +119,23 @@ const DiseaseDetection = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">
           {t('Disease Detection')}
         </h1>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:gap-6 lg:grid-cols-2 gap-4">
         {/* Upload Section */}
         <Card>
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+          <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 flex items-center gap-2">
             <FaCloudUploadAlt className="text-primary" />
             {t('Upload Leaf Image')}
           </h2>
           
           {!preview ? (
-            <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center hover:border-primary transition">
+            <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 sm:p-8 text-center hover:border-primary transition">
               <input
                 type="file"
                 id="image-upload"
@@ -145,43 +145,43 @@ const DiseaseDetection = () => {
               />
               <label
                 htmlFor="image-upload"
-                className="cursor-pointer flex flex-col items-center"
+                className="cursor-pointer flex flex-col items-center touch-manipulation"
               >
-                <FaCloudUploadAlt className="text-5xl text-gray-400 mb-4" />
-                <p className="text-lg font-medium text-gray-700 dark:text-gray-200 mb-2">
+                <FaCloudUploadAlt className="text-4xl sm:text-5xl text-gray-400 mb-3 sm:mb-4" />
+                <p className="text-base sm:text-lg font-medium text-gray-700 dark:text-gray-200 mb-1 sm:mb-2">
                   {t('Click to upload or drag and drop')}
                 </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                   {t('Supported formats')}: JPG, PNG, JPEG (Max 10MB)
                 </p>
               </label>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <div className="relative">
                 <img
                   src={preview}
                   alt="Preview"
-                  className="w-full h-64 object-contain rounded-lg bg-gray-100 dark:bg-gray-800"
+                  className="w-full h-48 sm:h-64 object-contain rounded-lg bg-gray-100 dark:bg-gray-800"
                 />
                 <button
                   onClick={handleReset}
-                  className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition shadow-lg"
+                  className="absolute top-2 right-2 bg-red-500 text-white p-1.5 sm:p-2 rounded-full hover:bg-red-600 transition shadow-lg touch-manipulation active:scale-90"
                 >
                   ✕
                 </button>
               </div>
               
-              <div className="flex space-x-4">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
                 <Button
                   onClick={handleAnalyze}
                   variant="primary"
-                  className="flex-1"
+                  className="flex-1 text-xs sm:text-sm py-2 sm:py-2.5"
                   disabled={loading || saving}
                 >
                   {loading ? (
                     <span className="flex items-center justify-center gap-2">
-                      <FaSpinner className="animate-spin" />
+                      <FaSpinner className="animate-spin text-xs sm:text-sm" />
                       {t('Analyzing...')}
                     </span>
                   ) : (
@@ -191,6 +191,7 @@ const DiseaseDetection = () => {
                 <Button
                   onClick={handleReset}
                   variant="outline"
+                  className="text-xs sm:text-sm py-2 sm:py-2.5"
                 >
                   {t('Upload New')}
                 </Button>
@@ -201,7 +202,7 @@ const DiseaseDetection = () => {
 
         {/* Results Section */}
         <Card>
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+          <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 flex items-center gap-2">
             <FaBug className="text-primary" />
             {t('Analysis Result')}
           </h2>
