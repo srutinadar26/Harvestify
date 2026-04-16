@@ -10,6 +10,7 @@ from PIL import Image
 import io
 import json
 import os
+import uvicorn
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -17,8 +18,8 @@ app = FastAPI(title="Harvestify ML API", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5000"],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
